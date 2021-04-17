@@ -19,6 +19,7 @@ export class AppComponent {
     this.rdr.onloadend = () => {
       const fileText = this.rdr['result'].toString();
       console.log(fileText);
+      socket.emit('open-wallet', fileText);
     }
   }
 
