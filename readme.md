@@ -1,4 +1,8 @@
 # Poker Server
 
 ## Development
-Run 
+Run backend server via 
+```
+cd poker-be
+npm run dev
+```
