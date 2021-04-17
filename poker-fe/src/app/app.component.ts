@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'poker-fe';
+  rdr = new FileReader();
   constructor() {
 
 
@@ -15,5 +15,15 @@ export class AppComponent {
     const socket = io(url, {
       transports: ["websocket"],
     });
+
+    this.rdr.onloadend = () => {
+      const fileText = this.rdr['result'].toString();
+      console.log(fileText);
+    }
+  }
+
+  public onFileChange(event: Event) {
+    const file = event.target['files'][0];
+    this.rdr.readAsText(file);
   }
 }
