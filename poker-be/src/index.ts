@@ -1,5 +1,5 @@
 import express from "express";
-import { Contract, ProxyProvider, BasicWallet } from 'elrondjs'
+import { Contract, ProxyProvider, BasicWallet, Wallet, parseQueryResult, ContractQueryResultDataType } from 'elrondjs'
 
 
 const app = express();
@@ -21,9 +21,10 @@ io.on("connection", (socket: any) => {
     console.log("a user connected");
     // whenever we receive a 'message' we log it out
     socket.on("open-wallet", (message: any) => {
-        // tslint:disable-next-line:no-console
         const wallet = BasicWallet.fromJsonKeyFileString(message, 'password');
+
         console.log(wallet, message);
+        contractInteract(wallet);
     });
 });
 
@@ -32,3 +33,21 @@ http.listen(port, () => {
     // tslint:disable-next-line:no-console
     console.log(`server started at http://localhost:${port}`);
 });
+
+const contractInteract = async (wallet: Wallet) => {
+    const proxy = new ProxyProvider('http://localhost:7950');
+    const contractAddress = 'erd1qqqqqqqqqqqqqpgqfzydqmdw7m2vazsp6u5p95yxz76t2p9rd8ss0zp9ts';
+    const c = await Contract.at(contractAddress, {
+        provider: proxy,
+        signer: wallet,
+        sender: wallet.address(),
+    });
+    const plyrCnt = await c.query('playerCount');
+    const plyrCntParsed = parseQueryResult(plyrCnt, { type: ContractQueryResultDataType.INT });
+    console.log('Player Count', plyrCntParsed);
+
+    const dealer = await c.query('getDealer');
+    const dealerParsed = parseQueryResult(dealer, { type: ContractQueryResultDataType.ADDRESS });
+    console.log('Dealer', dealerParsed);
+
+}
