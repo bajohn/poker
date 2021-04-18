@@ -1,5 +1,5 @@
 import express from "express";
-import { Contract, ProxyProvider, BasicWallet, Wallet, parseQueryResult, ContractQueryResultDataType } from 'elrondjs'
+import { Contract, ProxyProvider, BasicWallet, Wallet, parseQueryResult, ContractQueryResultDataType, TransactionOptions } from 'elrondjs'
 
 
 const app = express();
@@ -49,5 +49,11 @@ const contractInteract = async (wallet: Wallet) => {
     const dealer = await c.query('getDealer');
     const dealerParsed = parseQueryResult(dealer, { type: ContractQueryResultDataType.ADDRESS });
     console.log('Dealer', dealerParsed);
+
+    const options: TransactionOptions = {
+        gasLimit: 50000000,
+    };
+    const joinResp = await c.invoke('join', [], options);
+    console.log('join', joinResp);
 
 }
