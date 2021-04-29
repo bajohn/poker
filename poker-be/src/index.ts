@@ -21,9 +21,8 @@ io.on("connection", (socket: any) => {
     console.log("a user connected");
     // whenever we receive a 'message' we log it out
     socket.on("open-wallet", (message: any) => {
+        console.log('Opening wallet');
         const wallet = BasicWallet.fromJsonKeyFileString(message, 'password');
-
-        console.log(wallet, message);
         contractInteract(wallet);
     });
 });
