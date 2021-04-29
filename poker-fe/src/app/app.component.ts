@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SocketService } from './services/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +8,14 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  constructor() {
+  constructor(
+    private socketServ: SocketService
+  ) {
 
+  }
+
+  clickCb() {
+    this.socketServ.emit('test', 'msg');
   }
 
 
