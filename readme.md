@@ -26,3 +26,7 @@ Local development ports:
 - http://localhost:8000 DynamoDB
 - http://localhost:7950 Elrond testnet
 - ws://localhost:8080/socket.io Angular <-> Express Websocket
+
+## Next TODO
+
+- Create simple datastore to mock smart contract for faster development. Use Google Sheets design as a model.
