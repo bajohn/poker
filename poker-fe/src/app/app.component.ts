@@ -15,7 +15,7 @@ export class AppComponent {
   }
 
   clickCb() {
-    this.socketServ.emit('test', 'msg');
+    this.socketServ.emit('create-contract');
   }
 
 

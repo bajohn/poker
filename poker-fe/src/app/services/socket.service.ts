@@ -15,7 +15,7 @@ export class SocketService {
     });
   }
   
-  public emit(endpoint: string, message: any) {
+  public emit(endpoint: string, message?: any) {
     this.socket.emit(endpoint, message);
   }
 }
