@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
-
+import { wsendpoint } from "../../../../shared/types";
 @Injectable({
   providedIn: 'root'
 })
@@ -15,7 +15,7 @@ export class SocketService {
     });
   }
   
-  public emit(endpoint: string, message?: any) {
+  public emit(endpoint: wsendpoint, message?: any) {
     this.socket.emit(endpoint, message);
   }
 }
