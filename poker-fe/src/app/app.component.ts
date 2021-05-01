@@ -14,8 +14,8 @@ export class AppComponent {
 
   }
 
-  clickCb() {
-    this.socketServ.emit('create-contract');
+  createGameCb() {
+    this.socketServ.emit('create-game');
   }
 
 

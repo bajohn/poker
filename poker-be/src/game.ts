@@ -10,5 +10,7 @@ export class Game {
     //private players: Player[]
     // private io: Server;
     constructor() {
+        console.log(this.contract);
     }
+
 }
