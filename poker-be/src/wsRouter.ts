@@ -3,15 +3,18 @@ import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { DataStore } from "./dataStore";
 import { wsendpoint } from "../../shared/types"
 import { walletOpenHandler } from "./wsEndpoints/open-wallet";
-import { createGameHandler } from "./wsEndpoints/create-contract";
+import { createGameHandler } from "./wsEndpoints/create-game";
+import { playerJoinHandler } from "./wsEndpoints/player-join";
 
 const wsSetup = (io: Server) => {
     const dataStore = new DataStore();
     io.on("connection", (socket: Socket<DefaultEventsMap, DefaultEventsMap>) => {
 
+        // TODO how to make these callbacks more uniform?
+        // Datastore and socketEmitter should be available to everybody 
         socketOn(socket, "open-wallet", walletOpenHandler);
-        socketOn(socket, 'create-game', () => createGameHandler(dataStore))
-
+        socketOn(socket, 'create-game', () => createGameHandler(dataStore, socketEmitter(socket)))
+        socketOn(socket, 'player-join', (msg) => playerJoinHandler(dataStore, msg))
     });
 }
 
@@ -21,7 +24,12 @@ const socketOn = (
     callback: (...args: any[]) => void // TODO can probably nail this type down more precisely
 ) => {
     socket.on(endpoint, callback);
+}
 
+const socketEmitter = (
+    socket: Socket<DefaultEventsMap, DefaultEventsMap>
+) => {
+    return (endpoint: wsendpoint, message: any) => socket.emit(endpoint, message);
 }
 
 

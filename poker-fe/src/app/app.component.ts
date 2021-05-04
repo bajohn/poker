@@ -16,6 +16,9 @@ export class AppComponent {
 
   createGameCb() {
     this.socketServ.emit('create-game');
+    this.socketServ.on('game-created-id', (msg) => {
+      console.log('Game created, msg', msg)
+    })
   }
 
 

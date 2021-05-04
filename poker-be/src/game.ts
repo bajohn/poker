@@ -1,16 +1,21 @@
 import { Contract } from "./mockContract/contract"
 import { Dealer } from "./mockContract/dealer";
-
+import { v4 as uuidv4 } from 'uuid';
 
 
 export class Game {
     private dealer = new Dealer();
     private contract = new Contract(this.dealer);
-    //private dealers: Dealer[];
-    //private players: Player[]
-    // private io: Server;
+
+    private gameId = uuidv4();
+
     constructor() {
-        console.log(this.contract);
     }
+
+    getGameId() {
+        return this.gameId;
+    }
+
+
 
 }

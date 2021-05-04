@@ -3,3 +3,8 @@
     width: 300px;
     background-color: lightskyblue;
 }
+
+.player-gen-container {
+    background-color: lightskyblue;
+    padding: 10px;
+}

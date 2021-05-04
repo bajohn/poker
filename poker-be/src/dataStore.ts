@@ -12,7 +12,10 @@ export class DataStore {
 
 
     createGame() {
-        this.games.push(new Game());
+        const newGame = new Game();
+
+        this.games.push(newGame);
+        return newGame.getGameId();
     }
 
 }

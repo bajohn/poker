@@ -8,14 +8,20 @@ import { wsendpoint } from "../../../../shared/types";
 export class SocketService {
 
   private socket: Socket<DefaultEventsMap, DefaultEventsMap>;
-  constructor() { 
+  constructor() {
     const url = 'localhost:8080';
     this.socket = io(url, {
       transports: ["websocket"],
     });
   }
-  
+
   public emit(endpoint: wsendpoint, message?: any) {
     this.socket.emit(endpoint, message);
+  }
+
+  public on(endpoint: wsendpoint,
+    callback: (...args: any[]) => void // TODO can probably nail this type down more precisely )
+  ) {
+    this.socket.on(endpoint, callback);
   }
 }
