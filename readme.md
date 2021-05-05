@@ -30,3 +30,5 @@ Local development ports:
 ## Next TODO
 
 - Create simple datastore to mock smart contract for faster development. Use Google Sheets design as a model.
+
+?? https://marketplace.visualstudio.com/items?itemName=WallabyJs.quokka-vscode
