@@ -1,7 +1,13 @@
 import { Contract, ProxyProvider, BasicWallet, Wallet, parseQueryResult, ContractQueryResultDataType, TransactionOptions } from 'elrondjs'
+import { DataStore } from '../dataStore';
+import { iServerWsCb, wsendpoint } from '../../../shared/types';
 
 
-const walletOpenHandler = (message: any) => {
+const walletOpenHandler: iServerWsCb = (
+    dataStore: DataStore,
+    socketEmitter: (endpoint: wsendpoint, message: any) => void,
+    message: string
+) => {
     console.log('Opening wallet');
     const wallet = BasicWallet.fromJsonKeyFileString(message, 'password');
     contractInteract(wallet);
