@@ -5,7 +5,21 @@ export type wsendpoint =
     'open-wallet' |
     'create-game' |
     'player-join' |
-    'game-created-id';
+    'game-created-id' | 
+    'player-joined';
+
+// TODO: separate be/fe endpoints
+// export type wsfeendpoint =
+//     'open-wallet' |
+//     'create-game' |
+//     'player-join' |
+//     'game-created-id';
+
+// export type wsbeendpoint =
+//     'open-wallet' |
+//     'create-game' |
+//     'player-join' |
+//     'game-created-id';
 
 
 export interface iServerWsCb {

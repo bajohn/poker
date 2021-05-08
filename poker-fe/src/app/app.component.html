@@ -1,3 +1,8 @@
-<button (click)="createGameCb()">
+<button (click)="createGameClick()">
     Create Game
 </button>
+<div>
+    <app-player-gen [gameId]="gameId">
+
+    </app-player-gen>
+</div>

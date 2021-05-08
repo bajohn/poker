@@ -7,18 +7,18 @@ import { SocketService } from './services/socket.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  public gameId = null;
   constructor(
     private socketServ: SocketService
   ) {
+    socketServ.on('game-created-id', resp => {
+      this.gameId = resp.gameId;
+    });
 
   }
 
-  createGameCb() {
+  createGameClick() {
     this.socketServ.emit('create-game');
-    this.socketServ.on('game-created-id', (msg) => {
-      console.log('Game created, msg', msg)
-    })
   }
 
 

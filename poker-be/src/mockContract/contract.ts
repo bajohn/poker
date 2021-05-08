@@ -6,6 +6,7 @@ export class Contract {
     private dealerAddress: string;
     private address = uuidv4();
 
+
     constructor(dealer: Dealer) {
         this.dealerAddress = dealer.getAddress(); 
     }
