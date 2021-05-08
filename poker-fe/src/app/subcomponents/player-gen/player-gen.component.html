@@ -1,6 +1,6 @@
 <div class="player-gen-container">
     Player {{getAddress()}}
-    <button (click)="join()">
+    <button (click)="join()" [disabled]="alreadyJoined">
         Join
     </button>
 

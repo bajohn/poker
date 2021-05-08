@@ -8,6 +8,7 @@ import { SocketService } from './services/socket.service';
 })
 export class AppComponent {
   public gameId = null;
+  playerIter = []; // blank array used to count players. Dumb, but easiest way to do this
   constructor(
     private socketServ: SocketService
   ) {
@@ -15,11 +16,21 @@ export class AppComponent {
       this.gameId = resp.gameId;
     });
 
+
+    // for (let x of this.getPlayerIter()) {
+    //   console.log(x);
+    // }
+
   }
 
   createGameClick() {
     this.socketServ.emit('create-game');
   }
+
+  addPlayerClick() {
+    this.playerIter.push(null);
+  }
+
 
 
 }

@@ -13,6 +13,8 @@ export class PlayerGenComponent implements OnInit {
   private offsetX: 0;
   private offsetY: 0;
 
+  alreadyJoined = false;
+
   @Input() gameId: string;
 
   constructor(
@@ -21,7 +23,9 @@ export class PlayerGenComponent implements OnInit {
 
   ngOnInit(): void {
     this.socketServ.on('player-joined', (msg) => {
-      console.log('player joined!', msg);
+      if(msg.playerAddress === this.address) {
+        this.alreadyJoined = true;
+      }
     });
   }
 
