@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
-import { wsendpoint } from "../../../../shared/types";
+import { wsfeendpoint, wsbeendpoint } from "../../../../shared/types";
 @Injectable({
   providedIn: 'root'
 })
@@ -15,11 +15,11 @@ export class SocketService {
     });
   }
 
-  public emit(endpoint: wsendpoint, message?: any) {
+  public emit(endpoint: wsbeendpoint, message?: any) {
     this.socket.emit(endpoint, message);
   }
 
-  public on(endpoint: wsendpoint,
+  public on(endpoint: wsfeendpoint,
     callback: (...args: any[]) => void // TODO can probably nail this type down more precisely )
   ) {
     this.socket.on(endpoint, callback);

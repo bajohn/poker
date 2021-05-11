@@ -10,9 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 export class PlayerGenComponent implements OnInit {
   private address = uuidv4();
 
-  private offsetX: 0;
-  private offsetY: 0;
-
   alreadyJoined = false;
 
   @Input() gameId: string;

@@ -1,14 +1,13 @@
-import { DataStore } from "../dataStore";
-import { iServerWsCb, wsendpoint } from "../../../shared/types";
+import { iServerWsCb } from "../../../shared/types";
 
 const createGameHandler: iServerWsCb =
     (
-        dataStore: DataStore,
-        socketEmitter: (endpoint: wsendpoint, message: any) => void,
-        message: string
+        dataStore,
+        socketEmitter,
+        message
     ) => {
         const gameId = dataStore.createGame();
-        socketEmitter('game-created-id', {gameId});
+        socketEmitter('game-created-id', { gameId });
         console.log(dataStore);
     }
 

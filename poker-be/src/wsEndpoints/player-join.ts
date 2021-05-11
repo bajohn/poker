@@ -1,12 +1,11 @@
-import { iServerWsCb, wsendpoint } from "../../../shared/types";
-import { DataStore } from "../dataStore";
+import { iServerWsCb } from "../../../shared/types";
 
 
 const playerJoinHandler: iServerWsCb =
     (
-        dataStore: DataStore,
-        socketEmitter: (endpoint: wsendpoint, message: any) => void,
-        message: any
+        dataStore,
+        socketEmitter,
+        message
     ) => {
         const didJoin = dataStore.joinGame(message.playerAddress, message.gameId)
         console.log(dataStore);
