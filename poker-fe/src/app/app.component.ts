@@ -16,11 +16,6 @@ export class AppComponent {
       this.gameId = resp.gameId;
     });
 
-
-    // for (let x of this.getPlayerIter()) {
-    //   console.log(x);
-    // }
-
   }
 
   createGameClick() {

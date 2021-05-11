@@ -10,7 +10,8 @@ export type wsfeendpoint =
 export type wsbeendpoint =
     'open-wallet' |
     'create-game' |
-    'player-join'
+    'player-join';
+
 
 
 export interface iServerWsCb {
@@ -19,4 +20,17 @@ export interface iServerWsCb {
         socketEmitter: (endpoint: wsfeendpoint, message: any) => void,
         message: any
     ): void
-}
+};
+
+export interface iHand {
+    playerCards: {
+        [key: string]: iCard[]
+    }
+};
+
+export interface iCard {
+    value: number
+    suit: Suit
+};
+
+export type Suit = 'C' | 'D' | 'S' | 'H';

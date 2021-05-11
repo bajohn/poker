@@ -2,6 +2,7 @@ import { Contract } from "./mockContract/contract"
 import { Dealer } from "./mockContract/dealer";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
+import { iCard, Suit } from "../../shared/types";
 
 
 export class Game {
@@ -11,9 +12,10 @@ export class Game {
 
 
     private gameId = uuidv4();
-
+    cards: iCard[];
 
     constructor() {
+        this.cards = this.generateCards();
     }
 
     getGameId() {
@@ -35,6 +37,17 @@ export class Game {
         }
     }
 
+    startGame() {
+        const config = {
+            blinds: 10,
+        }
+        this.dealCards();
+    }
+
+    dealCards() {
+
+    }
+
     private getPlayer(playerAddress: string) {
         const players = this.players.filter((player) => {
             return playerAddress === player.getAddress();
@@ -46,6 +59,20 @@ export class Game {
         } else {
             throw Error(`Duplicate playerAddress: ${playerAddress}`);
         }
+    }
+
+    private generateCards() {
+        const ret: iCard[] = [];
+        const suits: Suit[] = ['C', 'D', 'S', 'H'];
+        for (let suit of suits) {
+            for (let value = 2; value <= 14; value++) {
+                ret.push({
+                    suit,
+                    value
+                })
+            }
+        }
+        return ret;
     }
 
 

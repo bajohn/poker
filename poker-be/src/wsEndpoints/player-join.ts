@@ -8,7 +8,6 @@ const playerJoinHandler: iServerWsCb =
         message
     ) => {
         const didJoin = dataStore.joinGame(message.playerAddress, message.gameId)
-        console.log(dataStore);
         socketEmitter('player-joined', {
             success: true,
             playerAddress: message.playerAddress,

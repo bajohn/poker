@@ -9,8 +9,9 @@ import { playerJoinHandler } from "./wsEndpoints/player-join";
 const dataStore = new DataStore();
 
 const wsSetup = (io: Server) => {
-    io.on("connection", (socket: Socket<DefaultEventsMap, DefaultEventsMap>) => {
 
+    io.on("connection", (socket: Socket<DefaultEventsMap, DefaultEventsMap>) => {
+        console.log('join!')
         // TODO how to make these callbacks more uniform?
         // Datastore and socketEmitter should be available to everybody 
         socketOn(socket, "open-wallet", walletOpenHandler);
