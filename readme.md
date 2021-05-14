@@ -28,7 +28,3 @@ Local development ports:
 - ws://localhost:8080/socket.io Angular <-> Express Websocket
 
 ## Next TODO
-
-- Create simple datastore to mock smart contract for faster development. Use Google Sheets design as a model.
-
-?? https://marketplace.visualstudio.com/items?itemName=WallabyJs.quokka-vscode

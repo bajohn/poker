@@ -1,6 +1,7 @@
 import { DataStore } from "../poker-be/src/dataStore";
 
 
+
 // Front end listener endpoints
 export type wsfeendpoint =
     'game-created-id' |
@@ -32,5 +33,7 @@ export interface iCard {
     value: number
     suit: Suit
 };
+
+
 
 export type Suit = 'C' | 'D' | 'S' | 'H';

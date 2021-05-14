@@ -1,10 +1,11 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { DataStore } from "./dataStore";
-import { wsbeendpoint, wsfeendpoint } from "../../shared/types"
+import { wsfeendpoint } from "../../shared/types"
 import { walletOpenHandler } from "./wsEndpoints/open-wallet";
 import { createGameHandler } from "./wsEndpoints/create-game";
 import { playerJoinHandler } from "./wsEndpoints/player-join";
+import { iServerSocketOn } from "./types/types";
 
 const dataStore = new DataStore();
 
@@ -20,16 +21,12 @@ const wsSetup = (io: Server) => {
     });
 }
 
-const socketOn = (
-    socket: Socket<DefaultEventsMap, DefaultEventsMap>,
-    endpoint: wsbeendpoint,
-    callback: (
-        dataStore: DataStore,
-        socketEmitter: (endpoint: wsfeendpoint, message: any) => void,
-        message: any
-    ) => void //(...args: any[]) => void // TODO can probably nail this type down more precisely
+const socketOn: iServerSocketOn = (
+    socket,
+    beEndpoint,
+    callback
 ) => {
-    socket.on(endpoint, (msg: any) => { callback(dataStore, socketEmitter(socket), msg) });
+    socket.on(beEndpoint, (msg: any) => { callback(dataStore, socketEmitter(socket), msg) });
 }
 
 const socketEmitter = (

@@ -1,7 +1,7 @@
 <button (click)="createGameClick()" [disabled]="gameId">
     Create Game
 </button>
-<button (click)="addPlayerClick()">
+<button (click)="addPlayerClick()" [disabled]="!gameId">
     Add Player
 </button>
 <app-player-gen [gameId]="gameId" *ngFor="let player of playerIter">
