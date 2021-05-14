@@ -3,7 +3,7 @@ import { Dealer } from "./mockContract/dealer";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
 import { iCard, Suit } from "../../shared/types";
-
+import { randomInt } from 'crypto';
 
 export class Game {
     private dealer = new Dealer();
@@ -41,11 +41,24 @@ export class Game {
         const config = {
             blinds: 10,
         }
+        this.shuffleCards();
         this.dealCards();
     }
 
     dealCards() {
 
+    }
+
+    private shuffleCards() {
+        const localCards: iCard[] = [].concat(this.cards);
+        const resp = [];
+
+        while (localCards.length > 0) {
+            const nextIdx = randomInt(localCards.length);
+            const nextCard = localCards.splice(nextIdx, 1)[0];
+            resp.push(nextCard);
+        }
+        this.cards = resp;
     }
 
     private getPlayer(playerAddress: string) {
