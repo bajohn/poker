@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
+import { iConnection } from 'src/app/types/fetypes';
 import { v4 as uuidv4 } from 'uuid';
 // Generate demo player for testing
 @Component({
@@ -13,27 +14,24 @@ export class PlayerGenComponent implements OnInit {
   alreadyJoined = false;
 
   @Input() gameId: string;
-
+  connection: iConnection
   constructor(
     private socketServ: SocketService
   ) { }
 
   ngOnInit(): void {
-    this.socketServ.on('player-joined', (msg) => {
-      if (msg.playerAddress === this.address) {
-        this.alreadyJoined = true;
-      }
+    this.connection = this.socketServ.createPlayerConn();
+    this.connection.on('player-joined', (msg) => {
+      console.log('player found from', this.address, 'Message', msg);
+      this.alreadyJoined = true;
     });
   }
 
   join() {
-    this.socketServ.emit('player-join', {
+    this.connection.emit('player-join', {
       playerAddress: this.address,
       gameId: this.gameId
     });
-
-    const connection = this.socketServ.createConnection();
-    console.log(connection);
   }
 
   getAddress() {

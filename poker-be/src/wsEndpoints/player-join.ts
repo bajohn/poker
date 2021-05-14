@@ -1,4 +1,4 @@
-import { iServerWsCb } from "../../../shared/types";
+import { iServerWsCb } from "../types/betypes";
 
 
 const playerJoinHandler: iServerWsCb =
@@ -7,12 +7,7 @@ const playerJoinHandler: iServerWsCb =
         socketEmitter,
         message
     ) => {
-        const didJoin = dataStore.joinGame(message.playerAddress, message.gameId)
-        socketEmitter('player-joined', {
-            success: true,
-            playerAddress: message.playerAddress,
-            didJoin
-        });
+        dataStore.joinGame(message.playerAddress, message.gameId, socketEmitter)
     }
 
 export {

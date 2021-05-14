@@ -1,13 +1,19 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { DataStore } from "../dataStore";
-import { wsbeendpoint, wsfeendpoint } from "../../../shared/types";
+import { wsbeendpoint, wsfeendpoint } from "../../../shared/sharedtypes";
 
 
 export type iServerSocketOn = (socket: Socket<DefaultEventsMap, DefaultEventsMap>,
     endpoint: wsbeendpoint,
-    callback: (
+    callback: iServerWsCb) => void
+
+export interface iServerWsCb {
+    (
         dataStore: DataStore,
-        socketEmitter: (endpoint: wsfeendpoint, message: any) => void,
+        socketEmitter: socketEmitter,
         message: any
-    ) => void) => void
+    ): void
+};
+
+export type socketEmitter = (endpoint: wsfeendpoint, message: any) => void;

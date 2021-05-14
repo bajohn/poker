@@ -15,7 +15,6 @@ export class AppComponent {
     socketServ.on('game-created-id', resp => {
       this.gameId = resp.gameId;
     });
-
   }
 
   createGameClick() {

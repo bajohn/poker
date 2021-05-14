@@ -2,8 +2,9 @@ import { Contract } from "./mockContract/contract"
 import { Dealer } from "./mockContract/dealer";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
-import { iCard, Suit } from "../../shared/types";
+import { iCard, Suit } from "../../shared/sharedtypes";
 import { randomInt } from 'crypto';
+import { socketEmitter } from "./types/betypes";
 
 export class Game {
     private dealer = new Dealer();
@@ -13,6 +14,10 @@ export class Game {
 
     private gameId = uuidv4();
     cards: iCard[];
+
+    private dealtCards: {
+        [key: string]: iCard[]
+    }
 
     constructor() {
         this.cards = this.generateCards();
@@ -26,15 +31,22 @@ export class Game {
     // join the game. 
     // Returns true if joined,
     // false if already in the game
-    joinGame(playerAddress: string) {
-        const newPlayer = new Player(playerAddress);
+    joinGame(playerAddress: string, socketEmitter: socketEmitter) {
+        const newPlayer = new Player(playerAddress, socketEmitter);
         const playerAddrs = this.players.map(el => el.getAddress());
+        let didJoin;
         if (playerAddrs.includes(playerAddress)) {
-            return false;
+            didJoin = false;
         } else {
             this.players.push(newPlayer);
-            return true;
+            didJoin = true;
         }
+        socketEmitter('player-joined', {
+            success: true,
+            playerAddress: playerAddress,
+            didJoin
+        });
+
     }
 
     startGame() {

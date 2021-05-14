@@ -1,5 +1,5 @@
 import { Contract, ProxyProvider, BasicWallet, Wallet, parseQueryResult, ContractQueryResultDataType, TransactionOptions } from 'elrondjs';
-import { iServerWsCb } from '../../../shared/types';
+import { iServerWsCb } from '../types/betypes';
 
 
 const walletOpenHandler: iServerWsCb = (

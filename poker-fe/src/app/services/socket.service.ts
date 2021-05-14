@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
-import { wsfeendpoint, wsbeendpoint } from "../../../../shared/types";
+import { wsfeendpoint, wsbeendpoint } from "../../../../shared/sharedtypes";
 import { v4 as uuidv4 } from 'uuid';
+import { iConnection } from '../types/fetypes';
 
 @Injectable({
   providedIn: 'root'
@@ -27,20 +28,17 @@ export class SocketService {
     this.socket.on(endpoint, callback);
   }
 
-  public createConnection() {
+  public createPlayerConn(): iConnection {
     const socket = io(this.URL, {
       transports: ["websocket"],
     });
 
     return {
-      id: uuidv4(),
-      emit: (endpoint: wsbeendpoint, message?: any) => {
+      emit: (endpoint, message) => {
         socket.emit(endpoint, message);
       },
-      on: (endpoint: wsfeendpoint,
-        callback: (...args: any[]) => void
-      ) => {
-        this.socket.on(endpoint, callback);
+      on: (endpoint, callback) => {
+        socket.on(endpoint, callback);
       }
     }
 

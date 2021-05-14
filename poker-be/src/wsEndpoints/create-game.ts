@@ -1,4 +1,4 @@
-import { iServerWsCb } from "../../../shared/types";
+import { iServerWsCb } from "../types/betypes";
 
 const createGameHandler: iServerWsCb =
     (
@@ -7,7 +7,7 @@ const createGameHandler: iServerWsCb =
         message
     ) => {
         const gameId = dataStore.createGame();
-        
+
         socketEmitter('game-created-id', { gameId });
     }
 

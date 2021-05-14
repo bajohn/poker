@@ -1,5 +1,6 @@
 
 import { Game } from "./game";
+import { socketEmitter } from "./types/betypes";
 
 
 
@@ -19,9 +20,9 @@ export class DataStore {
         return newGame.getGameId();
     }
 
-    joinGame(playerAddress: string, gameId: string) {
+    joinGame(playerAddress: string, gameId: string, socketEmitter: socketEmitter) {
         const game = this.getGame(gameId);
-        return game.joinGame(playerAddress);
+        return game.joinGame(playerAddress, socketEmitter);
 
     }
 
