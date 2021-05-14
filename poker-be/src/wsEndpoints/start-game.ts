@@ -7,7 +7,7 @@ const startGameHandler: iServerWsCb =
         socketEmitter,
         message
     ) => {
-        dataStore.startGame(message.gameId)
+        dataStore.startGame(message.gameId, socketEmitter)
     }
 
 export {

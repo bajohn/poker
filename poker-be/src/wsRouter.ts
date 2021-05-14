@@ -13,10 +13,14 @@ const dataStore = new DataStore();
 const wsSetup = (io: Server) => {
 
     io.on("connection", (socket: Socket<DefaultEventsMap, DefaultEventsMap>) => {
+        // game socket endpoints
         socketOn(socket, "open-wallet", walletOpenHandler);
         socketOn(socket, 'create-game', createGameHandler);
-        socketOn(socket, 'player-join', playerJoinHandler);
         socketOn(socket, 'start-game', startGameHandler);
+
+        // player socket endpoints
+        socketOn(socket, 'player-join', playerJoinHandler);
+        // TODO next: socketOn(socket, 'bet-response', playerJoinHandler);
     });
 }
 

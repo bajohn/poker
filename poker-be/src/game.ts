@@ -2,7 +2,7 @@ import { Contract } from "./mockContract/contract"
 import { Dealer } from "./mockContract/dealer";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
-import { iCard, Suit } from "../../shared/sharedtypes";
+import { GameState, iCard, Suit } from "../../shared/sharedtypes";
 import { randomInt } from 'crypto';
 import { socketEmitter } from "./types/betypes";
 
@@ -14,6 +14,10 @@ export class Game {
 
     private gameId = uuidv4();
     cards: iCard[];
+
+    // Game state stuff
+    private gameState: GameState = 'pregame';
+    private activePlayer: Player = null;
 
     constructor() {
         this.cards = this.generateCards();
@@ -45,18 +49,27 @@ export class Game {
 
     }
 
-    startGame() {
+    startGame(socketEmitter: socketEmitter) {
         const config = {
             blinds: 10,
         }
         this.shuffleCards();
         this.dealCards();
+        this.activePlayer = this.players[0]; // TODO: randomize first player
+        this.gameState = 'preflop';
+        socketEmitter('update-game-state', {
+            gameState: this.gameState
+        });
+    }
+
+    gameStep() {
+        this.activePlayer.requestBet
     }
 
     dealCards() {
-        for(let player of this.players) {
-            const cards = this.cards.splice(0,2);
-            player.dealCards(cards);            
+        for (let player of this.players) {
+            const cards = this.cards.splice(0, 2);
+            player.dealCards(cards);
         }
     }
 

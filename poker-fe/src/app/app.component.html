@@ -9,8 +9,8 @@
 </app-player-gen>
 
 <div *ngIf="gameId">
-    Game State 
-    <button (click)="startGameClick()">
+    Game State: {{gameState}}
+    <button (click)="startGameClick()" [disabled]="gameStarted()">
         Start Game
     </button>
 </div>
