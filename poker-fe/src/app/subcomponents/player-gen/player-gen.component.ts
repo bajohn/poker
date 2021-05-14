@@ -22,8 +22,10 @@ export class PlayerGenComponent implements OnInit {
   ngOnInit(): void {
     this.connection = this.socketServ.createPlayerConn();
     this.connection.on('player-joined', (msg) => {
-      console.log('player found from', this.address, 'Message', msg);
       this.alreadyJoined = true;
+    });
+    this.connection.on('deal-pocket-cards', (msg) => {
+      console.log('Cards for', this.address, msg);
     });
   }
 

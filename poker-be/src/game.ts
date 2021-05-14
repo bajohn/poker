@@ -15,10 +15,6 @@ export class Game {
     private gameId = uuidv4();
     cards: iCard[];
 
-    private dealtCards: {
-        [key: string]: iCard[]
-    }
-
     constructor() {
         this.cards = this.generateCards();
     }
@@ -58,7 +54,10 @@ export class Game {
     }
 
     dealCards() {
-
+        for(let player of this.players) {
+            const cards = this.cards.splice(0,2);
+            player.dealCards(cards);            
+        }
     }
 
     private shuffleCards() {

@@ -4,7 +4,8 @@ import { DataStore } from "./dataStore";
 import { wsfeendpoint } from "../../shared/sharedtypes"
 import { walletOpenHandler } from "./wsEndpoints/open-wallet";
 import { createGameHandler } from "./wsEndpoints/create-game";
- import { playerJoinHandler } from "./wsEndpoints/player-join";
+import { playerJoinHandler } from "./wsEndpoints/player-join";
+import { startGameHandler } from "./wsEndpoints/start-game";
 import { iServerSocketOn } from "./types/betypes";
 
 const dataStore = new DataStore();
@@ -15,6 +16,7 @@ const wsSetup = (io: Server) => {
         socketOn(socket, "open-wallet", walletOpenHandler);
         socketOn(socket, 'create-game', createGameHandler);
         socketOn(socket, 'player-join', playerJoinHandler);
+        socketOn(socket, 'start-game', startGameHandler);
     });
 }
 

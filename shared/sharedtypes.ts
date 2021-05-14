@@ -11,7 +11,9 @@ export type wsfeendpoint =
 export type wsbeendpoint =
     'open-wallet' |
     'create-game' |
-    'player-join';
+    'player-join' |
+    'start-game'
+    ;
 
 
 

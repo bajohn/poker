@@ -4,7 +4,8 @@ import { socketEmitter } from './types/betypes';
 
 export class Player {
     private address: string; //= uuidv4();
-    private socketEmitter: socketEmitter
+    private socketEmitter: socketEmitter;
+    private hand: iCard[];
     constructor(
         address: string,
         socketEmitter: socketEmitter
@@ -19,6 +20,7 @@ export class Player {
     }
 
     public dealCards(cards: iCard[]) {
- //       this.socketEmitter('deal-pocket-cards', cards)
+        this.hand = cards;
+        this.socketEmitter('deal-pocket-cards', cards);
     }
 }

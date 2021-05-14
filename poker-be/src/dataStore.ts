@@ -23,7 +23,11 @@ export class DataStore {
     joinGame(playerAddress: string, gameId: string, socketEmitter: socketEmitter) {
         const game = this.getGame(gameId);
         return game.joinGame(playerAddress, socketEmitter);
+    }
 
+    startGame(gameId: string) {
+        const game = this.getGame(gameId);
+        return game.startGame();
     }
 
     private getGame(gameId: string) {

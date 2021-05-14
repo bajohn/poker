@@ -25,6 +25,10 @@ export class AppComponent {
     this.playerIter.push(null);
   }
 
+  startGameClick() {
+    this.socketServ.emit('start-game', { gameId: this.gameId });
+  }
+
 
 
 }
