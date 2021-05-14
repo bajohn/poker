@@ -13,8 +13,8 @@ export class DataStore {
 
     // Create a new game
     // return gameId
-    createGame() {
-        const newGame = new Game();
+    createGame(socketEmitter: socketEmitter) {
+        const newGame = new Game(socketEmitter);
 
         this.games.push(newGame);
         return newGame.getGameId();
@@ -25,9 +25,9 @@ export class DataStore {
         return game.joinGame(playerAddress, socketEmitter);
     }
 
-    startGame(gameId: string, socketEmitter: socketEmitter) {
+    startGame(gameId: string) {
         const game = this.getGame(gameId);
-        return game.startGame(socketEmitter);
+        return game.startGame();
     }
 
     private getGame(gameId: string) {

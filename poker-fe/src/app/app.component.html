@@ -1,16 +1,30 @@
 <button (click)="createGameClick()" [disabled]="gameId">
     Create Game
 </button>
-<button (click)="addPlayerClick()" [disabled]="!gameId">
-    Add Player
-</button>
-<app-player-gen [gameId]="gameId" *ngFor="let player of playerIter">
 
-</app-player-gen>
+<div class="game-state-container" *ngIf="gameId">
+    <div>
+        Players:
+    </div>
+    <div *ngFor="let player of playersInGame">
+        {{player}}
+    </div>
+    <div>
+        Game State: {{gameState}}
+    </div>
 
-<div *ngIf="gameId">
-    Game State: {{gameState}}
     <button (click)="startGameClick()" [disabled]="gameStarted()">
         Start Game
     </button>
+
+
+
+    
 </div>
+
+<button (click)="addPlayerClick()" [disabled]="!gameId">
+    Add Player
+</button>
+<app-player-gen [gameId]="gameId" *ngFor="let player of blankPlayerIter">
+
+</app-player-gen>

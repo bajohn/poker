@@ -6,7 +6,7 @@ const createGameHandler: iServerWsCb =
         socketEmitter,
         message
     ) => {
-        const gameId = dataStore.createGame();
+        const gameId = dataStore.createGame(socketEmitter);
 
         socketEmitter('game-created-id', { gameId });
     }

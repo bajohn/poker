@@ -10,7 +10,10 @@ import { SocketService } from './services/socket.service';
 export class AppComponent {
   public gameId = null;
   public gameState: GameState = 'pregame';
-  playerIter = []; // blank array used to count players. Dumb, but easiest way to do this
+  blankPlayerIter = []; // blank array used to count players. Dumb, but easiest way to do this
+
+  public playersInGame = [];
+
   constructor(
     private socketServ: SocketService
   ) {
@@ -20,6 +23,10 @@ export class AppComponent {
     socketServ.on('update-game-state', resp => {
       this.gameState = resp.gameState;
     });
+    socketServ.on('player-joined', resp => {
+      this.playersInGame.push(
+        resp.playerAddress);
+    });
 
   }
 
@@ -28,7 +35,7 @@ export class AppComponent {
   }
 
   addPlayerClick() {
-    this.playerIter.push(null);
+    this.blankPlayerIter.push(null);
   }
 
   startGameClick() {

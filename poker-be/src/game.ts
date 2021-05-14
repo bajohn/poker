@@ -10,7 +10,7 @@ export class Game {
     private dealer = new Dealer();
     private contract = new Contract(this.dealer);
     private players: Player[] = [];
-
+    private gameSocketEmitter: socketEmitter;
 
     private gameId = uuidv4();
     cards: iCard[];
@@ -19,8 +19,9 @@ export class Game {
     private gameState: GameState = 'pregame';
     private activePlayer: Player = null;
 
-    constructor() {
+    constructor(socketEmitter: socketEmitter) {
         this.cards = this.generateCards();
+        this.gameSocketEmitter = socketEmitter;
     }
 
     getGameId() {
@@ -46,10 +47,16 @@ export class Game {
             playerAddress: playerAddress,
             didJoin
         });
+        if (didJoin) {
+            this.gameSocketEmitter('player-joined', {
+                playerAddress: playerAddress
+            });
+        }
+
 
     }
 
-    startGame(socketEmitter: socketEmitter) {
+    startGame() {
         const config = {
             blinds: 10,
         }
@@ -57,7 +64,7 @@ export class Game {
         this.dealCards();
         this.activePlayer = this.players[0]; // TODO: randomize first player
         this.gameState = 'preflop';
-        socketEmitter('update-game-state', {
+        this.gameSocketEmitter('update-game-state', {
             gameState: this.gameState
         });
     }
