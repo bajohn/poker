@@ -69,6 +69,7 @@ export class Game {
                 el.setNeedsToBet();
             });
         }
+        this.activeBet = this.activeBet + betMessage.newBetAmount;
         player.newBet(betMessage);
 
         const nextPlayerIdx = (playerIdx + 1) % this.players.length;

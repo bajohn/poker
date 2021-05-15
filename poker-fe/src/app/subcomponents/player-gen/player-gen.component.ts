@@ -15,6 +15,8 @@ export class PlayerGenComponent implements OnInit {
   alreadyJoined = false;
 
   needsBet = false;
+  curBet = 0;
+  betInput = 0;
 
   @Input() gameId: string;
   connection: iConnection
@@ -31,7 +33,9 @@ export class PlayerGenComponent implements OnInit {
       console.log(cards);
       this.cards = cards;
     });
-    this.connection.on('request-bet', () => {
+    this.connection.on('request-bet', (msg) => {
+      this.curBet = msg.curBet;
+      this.betInput = msg.curBet;
       this.needsBet = true;
     });
   }
@@ -49,7 +53,7 @@ export class PlayerGenComponent implements OnInit {
 
   makeBet() {
     const betMessage: iBetMessage = {
-      newBetAmount: 100
+      newBetAmount: this.betInput
     };
     this.connection.emit('player-bet-message', {
       playerAddress: this.address,

@@ -4,6 +4,12 @@
         Join
     </button>
 
+    <div>
+        Current Bet: {{curBet}}
+    </div>
+
+    <input type="number" [(value)]="betInput"/>
+
     <button (click)="makeBet()" [disabled]="!needsBet">
         Make bet
     </button>
