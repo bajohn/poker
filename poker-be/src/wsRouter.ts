@@ -7,6 +7,7 @@ import { createGameHandler } from "./wsEndpoints/create-game";
 import { playerJoinHandler } from "./wsEndpoints/player-join";
 import { startGameHandler } from "./wsEndpoints/start-game";
 import { iServerSocketOn } from "./types/betypes";
+import { playerBetMessageHandler } from "./wsEndpoints/player-bet-message";
 
 const dataStore = new DataStore();
 
@@ -20,6 +21,7 @@ const wsSetup = (io: Server) => {
 
         // player socket endpoints
         socketOn(socket, 'player-join', playerJoinHandler);
+        socketOn(socket, 'player-bet-message', playerBetMessageHandler);
         // TODO next: socketOn(socket, 'bet-response', playerJoinHandler);
     });
 }

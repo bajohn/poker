@@ -2,24 +2,27 @@ import { Contract } from "./mockContract/contract"
 import { Dealer } from "./mockContract/dealer";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
-import { GameState, iCard, Suit } from "../../shared/sharedtypes";
+import { GameState, iBetMessage, iCard, Suit } from "../../shared/sharedtypes";
 import { randomInt } from 'crypto';
-import { socketEmitter } from "./types/betypes";
+import { SocketEmitter } from "./types/betypes";
 
 export class Game {
     private dealer = new Dealer();
     private contract = new Contract(this.dealer);
     private players: Player[] = [];
-    private gameSocketEmitter: socketEmitter;
+    private gameSocketEmitter: SocketEmitter;
 
     private gameId = uuidv4();
     cards: iCard[];
 
     // Game state stuff
     private gameState: GameState = 'pregame';
-    private activePlayer: Player = null;
+    // private activePlayer: Player = null;
+    private activeBet = 0;
+    private potSize = 0;
+    private smallBlind = 10;
 
-    constructor(socketEmitter: socketEmitter) {
+    constructor(socketEmitter: SocketEmitter) {
         this.cards = this.generateCards();
         this.gameSocketEmitter = socketEmitter;
     }
@@ -32,7 +35,7 @@ export class Game {
     // join the game. 
     // Returns true if joined,
     // false if already in the game
-    joinGame(playerAddress: string, socketEmitter: socketEmitter) {
+    joinGame(playerAddress: string, socketEmitter: SocketEmitter) {
         const newPlayer = new Player(playerAddress, socketEmitter);
         const playerAddrs = this.players.map(el => el.getAddress());
         let didJoin;
@@ -52,26 +55,42 @@ export class Game {
                 playerAddress: playerAddress
             });
         }
+    }
 
+    playerBet(playerAddress: string, betMessage: iBetMessage, socketEmitter: SocketEmitter) {
+        const playerIdx = this.players.findIndex((player) => {
+            return player.getAddress() === playerAddress;
+        });
+        const player = this.players[playerIdx];
+        if (betMessage.newBetAmount > this.activeBet) {
+            // Raise: everybody needs to bet more
+            // TODO: check for validity
+            this.players.forEach(el => {
+                el.setNeedsToBet();
+            });
+        }
+        player.newBet(betMessage);
 
+        const nextPlayerIdx = (playerIdx + 1) % this.players.length;
+        const nextPlayer = this.players[nextPlayerIdx];
+        nextPlayer.requestBet(betMessage.newBetAmount);
     }
 
     startGame() {
-        const config = {
-            blinds: 10,
-        }
+
         this.shuffleCards();
         this.dealCards();
-        this.activePlayer = this.players[0]; // TODO: randomize first player
         this.gameState = 'preflop';
         this.gameSocketEmitter('update-game-state', {
             gameState: this.gameState
         });
+        const firstPlayer = this.players[0]; // TODO: randomize first player
+        firstPlayer.requestBet(this.smallBlind * 2);
     }
 
-    gameStep() {
-        this.activePlayer.requestBet
-    }
+    // gameStep() {
+    //     this.activePlayer.requestBet
+    // }
 
     dealCards() {
         for (let player of this.players) {
@@ -79,6 +98,7 @@ export class Game {
             player.dealCards(cards);
         }
     }
+
 
     private shuffleCards() {
         const localCards: iCard[] = [].concat(this.cards);

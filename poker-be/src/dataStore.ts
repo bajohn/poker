@@ -1,6 +1,7 @@
 
+import { iBetMessage } from "../../shared/sharedtypes";
 import { Game } from "./game";
-import { socketEmitter } from "./types/betypes";
+import { SocketEmitter } from "./types/betypes";
 
 
 
@@ -13,16 +14,21 @@ export class DataStore {
 
     // Create a new game
     // return gameId
-    createGame(socketEmitter: socketEmitter) {
+    createGame(socketEmitter: SocketEmitter) {
         const newGame = new Game(socketEmitter);
 
         this.games.push(newGame);
         return newGame.getGameId();
     }
 
-    joinGame(playerAddress: string, gameId: string, socketEmitter: socketEmitter) {
+    joinGame(playerAddress: string, gameId: string, socketEmitter: SocketEmitter) {
         const game = this.getGame(gameId);
         return game.joinGame(playerAddress, socketEmitter);
+    }
+
+    playerBetResponse(playerAddress: string, gameId: string, betMessage: iBetMessage, socketEmitter: SocketEmitter) {
+        const game = this.getGame(gameId);
+        return game.playerBet(playerAddress, betMessage, socketEmitter);
     }
 
     startGame(gameId: string) {

@@ -11,9 +11,9 @@ export type iServerSocketOn = (socket: Socket<DefaultEventsMap, DefaultEventsMap
 export interface iServerWsCb {
     (
         dataStore: DataStore,
-        socketEmitter: socketEmitter,
+        socketEmitter: SocketEmitter,
         message: any
     ): void
 };
 
-export type socketEmitter = (endpoint: wsfeendpoint, message: any) => void;
+export type SocketEmitter = (endpoint: wsfeendpoint, message: any) => void;

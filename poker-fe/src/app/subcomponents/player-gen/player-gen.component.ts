@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { iConnection } from 'src/app/types/fetypes';
 import { v4 as uuidv4 } from 'uuid';
-import { iCard } from '../../../../../shared/sharedtypes';
+import { iCard, iBetMessage } from '../../../../../shared/sharedtypes';
 // Generate demo player for testing
 @Component({
   selector: 'app-player-gen',
@@ -13,6 +13,8 @@ export class PlayerGenComponent implements OnInit {
   private address = uuidv4();
   cards: iCard[] = []
   alreadyJoined = false;
+
+  needsBet = false;
 
   @Input() gameId: string;
   connection: iConnection
@@ -29,6 +31,9 @@ export class PlayerGenComponent implements OnInit {
       console.log(cards);
       this.cards = cards;
     });
+    this.connection.on('request-bet', () => {
+      this.needsBet = true;
+    });
   }
 
   join() {
@@ -40,6 +45,18 @@ export class PlayerGenComponent implements OnInit {
 
   getAddress() {
     return this.address;
+  }
+
+  makeBet() {
+    const betMessage: iBetMessage = {
+      newBetAmount: 100
+    };
+    this.connection.emit('player-bet-message', {
+      playerAddress: this.address,
+      gameId: this.gameId,
+      betMessage: betMessage
+    });
+    this.needsBet = false;
   }
 
 }

@@ -4,6 +4,10 @@
         Join
     </button>
 
+    <button (click)="makeBet()" [disabled]="!needsBet">
+        Make bet
+    </button>
+
     <div *ngFor="let card of cards">
         <div>
             Card: {{card.value}}{{card.suit}}

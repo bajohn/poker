@@ -1,14 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
-import { iCard, wsfeendpoint } from '../../shared/sharedtypes';
-import { socketEmitter } from './types/betypes';
+import { iBetMessage, iCard, wsfeendpoint } from '../../shared/sharedtypes';
+import { SocketEmitter } from './types/betypes';
 
 export class Player {
     private address: string; //= uuidv4();
-    private socketEmitter: socketEmitter;
+    private socketEmitter: SocketEmitter;
     private hand: iCard[];
+    private betNeeded = false;
+    private outstandingBet = 0;
+    private folded = false;
+
     constructor(
         address: string,
-        socketEmitter: socketEmitter
+        socketEmitter: SocketEmitter
     ) {
         this.address = address;
         this.socketEmitter = socketEmitter;
@@ -26,6 +30,24 @@ export class Player {
 
     public requestBet(curBet: number) {
         this.socketEmitter('request-bet', { curBet });
+    }
+
+    public needsToBet() {
+        return this.betNeeded;
+    }
+
+    public setNeedsToBet() {
+        this.betNeeded = true;
+    }
+
+    public newBet(betMessage: iBetMessage) {
+        const newBetAmount = betMessage.newBetAmount;
+        this.outstandingBet += newBetAmount;
+        this.betNeeded = false;
+    }
+
+    public isFolded() {
+        return this.folded;
     }
 
 

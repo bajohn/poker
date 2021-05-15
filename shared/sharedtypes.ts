@@ -11,11 +11,15 @@ export type wsfeendpoint =
 
 // Back end listener endpoints
 export type wsbeendpoint =
+    // game endpoints
     'open-wallet' |
     'create-game' |
-    'player-join' |
     'start-game' | 
-    'bet-response'
+    'bet-response' |
+
+    // player endpoints
+    'player-join' |
+    'player-bet-message'
     ;
 
 
@@ -30,6 +34,10 @@ export interface iCard {
     value: number
     suit: Suit
 };
+
+export interface iBetMessage {
+    newBetAmount: number
+}
 
 export type GameState = 'pregame' | 'preflop' 
 
