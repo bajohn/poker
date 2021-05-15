@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { iConnection } from 'src/app/types/fetypes';
 import { v4 as uuidv4 } from 'uuid';
+import { iCard } from '../../../../../shared/sharedtypes';
 // Generate demo player for testing
 @Component({
   selector: 'app-player-gen',
@@ -10,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class PlayerGenComponent implements OnInit {
   private address = uuidv4();
-
+  cards: iCard[] = []
   alreadyJoined = false;
 
   @Input() gameId: string;
@@ -24,8 +25,9 @@ export class PlayerGenComponent implements OnInit {
     this.connection.on('player-joined', (msg) => {
       this.alreadyJoined = true;
     });
-    this.connection.on('deal-pocket-cards', (msg) => {
-      console.log('Cards for', this.address, msg);
+    this.connection.on('deal-pocket-cards', (cards: iCard[]) => {
+      console.log(cards);
+      this.cards = cards;
     });
   }
 

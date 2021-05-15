@@ -4,5 +4,10 @@
         Join
     </button>
 
+    <div *ngFor="let card of cards">
+        <div>
+            Card: {{card.value}}{{card.suit}}
+        </div>
+    </div>
 
 </div>

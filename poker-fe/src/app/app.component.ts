@@ -42,8 +42,8 @@ export class AppComponent {
     this.socketServ.emit('start-game', { gameId: this.gameId });
   }
 
-  gameStarted() {
-    return this.gameState !== 'pregame';
+  canStartGame() {
+    return (this.gameState === 'pregame') && (this.playersInGame.length > 0);
   }
 
 }

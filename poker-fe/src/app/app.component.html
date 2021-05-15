@@ -13,7 +13,7 @@
         Game State: {{gameState}}
     </div>
 
-    <button (click)="startGameClick()" [disabled]="gameStarted()">
+    <button (click)="startGameClick()" [disabled]="!canStartGame()">
         Start Game
     </button>
 
