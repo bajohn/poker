@@ -22,6 +22,8 @@ export class Game {
     private potSize = 0;
     private smallBlind = 10;
 
+    private raiser: Player = null;
+
     constructor(socketEmitter: SocketEmitter) {
         this.cards = this.generateCards();
         this.gameSocketEmitter = socketEmitter;
@@ -62,19 +64,28 @@ export class Game {
             return player.getAddress() === playerAddress;
         });
         const player = this.players[playerIdx];
-        if (betMessage.newBetAmount > this.activeBet) {
-            // Raise: everybody needs to bet more
-            // TODO: check for validity
-            this.players.forEach(el => {
-                el.setNeedsToBet();
-            });
+        // TODO validate
+        const newOutstandingBet = betMessage.newBetAmount + player.getOutstandingBet();
+        console.log('one');
+        console.log(newOutstandingBet, betMessage.newBetAmount, player.getOutstandingBet());
+        if (newOutstandingBet > this.activeBet) {
+            this.activeBet = newOutstandingBet;
+            this.raiser = player;
         }
-        this.activeBet = this.activeBet + betMessage.newBetAmount;
-        player.newBet(betMessage);
+
+        player.newBet(newOutstandingBet);
+
 
         const nextPlayerIdx = (playerIdx + 1) % this.players.length;
         const nextPlayer = this.players[nextPlayerIdx];
-        nextPlayer.requestBet(betMessage.newBetAmount);
+        const nextPlayerOutstanding = nextPlayer.getOutstandingBet();
+        const diff = this.activeBet - nextPlayerOutstanding;
+        console.log('two');
+        console.log(diff, this.activeBet, nextPlayerOutstanding);
+        if ((nextPlayer !== this.raiser) || diff > 0) {
+            nextPlayer.requestBet(diff);
+        }
+
     }
 
     startGame() {
@@ -86,6 +97,7 @@ export class Game {
             gameState: this.gameState
         });
         const firstPlayer = this.players[0]; // TODO: randomize first player
+        this.raiser = firstPlayer; // TODO set up blinds
         firstPlayer.requestBet(this.smallBlind * 2);
     }
 

@@ -6,7 +6,7 @@ export class Player {
     private address: string; //= uuidv4();
     private socketEmitter: SocketEmitter;
     private hand: iCard[];
-    private betNeeded = false;
+    //private betNeeded = false;
     private outstandingBet = 0;
     private folded = false;
 
@@ -32,18 +32,21 @@ export class Player {
         this.socketEmitter('request-bet', { curBet });
     }
 
-    public needsToBet() {
-        return this.betNeeded;
+    // public needsToBet() {
+    //     return this.betNeeded;
+    // }
+
+    // public setNeedsToBet() {
+    //     this.betNeeded = true;
+    // }
+
+    public newBet(newOutstandingBet: number) {
+        this.outstandingBet = newOutstandingBet;
+        //this.betNeeded = false;
     }
 
-    public setNeedsToBet() {
-        this.betNeeded = true;
-    }
-
-    public newBet(betMessage: iBetMessage) {
-        const newBetAmount = betMessage.newBetAmount;
-        this.outstandingBet += newBetAmount;
-        this.betNeeded = false;
+    public getOutstandingBet() {
+        return this.outstandingBet;
     }
 
     public isFolded() {

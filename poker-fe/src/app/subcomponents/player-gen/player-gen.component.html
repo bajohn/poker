@@ -8,7 +8,7 @@
         Current Bet: {{curBet}}
     </div>
 
-    <input type="number" [(value)]="betInput"/>
+    <input [(ngModel)]="betInput" />
 
     <button (click)="makeBet()" [disabled]="!needsBet">
         Make bet

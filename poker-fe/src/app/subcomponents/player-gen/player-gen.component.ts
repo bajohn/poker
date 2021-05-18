@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { SocketService } from 'src/app/services/socket.service';
 import { iConnection } from 'src/app/types/fetypes';
 import { v4 as uuidv4 } from 'uuid';
@@ -18,6 +18,7 @@ export class PlayerGenComponent implements OnInit {
   curBet = 0;
   betInput = 0;
 
+
   @Input() gameId: string;
   connection: iConnection
   constructor(
@@ -34,7 +35,6 @@ export class PlayerGenComponent implements OnInit {
       this.cards = cards;
     });
     this.connection.on('request-bet', (msg) => {
-      this.curBet = msg.curBet;
       this.betInput = msg.curBet;
       this.needsBet = true;
     });
@@ -55,6 +55,8 @@ export class PlayerGenComponent implements OnInit {
     const betMessage: iBetMessage = {
       newBetAmount: this.betInput
     };
+    this.curBet = this.betInput;
+    console.log(this.betInput)
     this.connection.emit('player-bet-message', {
       playerAddress: this.address,
       gameId: this.gameId,

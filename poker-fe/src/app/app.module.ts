@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UploadWalletComponent } from './subcomponents/upload-wallet/upload-wallet.component';
 import { PlayerGenComponent } from './subcomponents/player-gen/player-gen.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { PlayerGenComponent } from './subcomponents/player-gen/player-gen.compon
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
