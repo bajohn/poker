@@ -66,8 +66,6 @@ export class Game {
         const player = this.players[playerIdx];
         // TODO validate
         const newOutstandingBet = betMessage.newBetAmount + player.getOutstandingBet();
-        console.log('one');
-        console.log(newOutstandingBet, betMessage.newBetAmount, player.getOutstandingBet());
         if (newOutstandingBet > this.activeBet) {
             this.activeBet = newOutstandingBet;
             this.raiser = player;
@@ -80,8 +78,7 @@ export class Game {
         const nextPlayer = this.players[nextPlayerIdx];
         const nextPlayerOutstanding = nextPlayer.getOutstandingBet();
         const diff = this.activeBet - nextPlayerOutstanding;
-        console.log('two');
-        console.log(diff, this.activeBet, nextPlayerOutstanding);
+
         if ((nextPlayer !== this.raiser) || diff > 0) {
             nextPlayer.requestBet(diff);
         }

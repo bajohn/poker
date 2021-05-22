@@ -56,7 +56,7 @@ export class PlayerGenComponent implements OnInit {
       newBetAmount: this.betInput
     };
     this.curBet = this.betInput;
-    console.log(this.betInput)
+
     this.connection.emit('player-bet-message', {
       playerAddress: this.address,
       gameId: this.gameId,
