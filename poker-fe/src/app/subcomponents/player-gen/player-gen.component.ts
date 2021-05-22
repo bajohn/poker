@@ -17,7 +17,8 @@ export class PlayerGenComponent implements OnInit {
   needsBet = false;
   outstandingBet = 0;
   betInput = 0;
-
+  minBet = 0;
+  errMsg = '';
 
   @Input() gameId: string;
   connection: iConnection
@@ -36,6 +37,7 @@ export class PlayerGenComponent implements OnInit {
     });
     this.connection.on('request-bet', (msg) => {
       this.betInput = msg.curBet;
+      this.minBet = msg.curBet;
       this.needsBet = true;
     });
   }
@@ -52,10 +54,32 @@ export class PlayerGenComponent implements OnInit {
   }
 
   makeBetClick() {
+    if (this.betInput < this.minBet) {
+      this.errMsg = `Error: minimum bet ${this.minBet}`;
+    } else {
+      this.errMsg = '';
+      const betMessage: iBetMessage = {
+        newBetAmount: this.betInput,
+        fold: false 
+      };
+      this.outstandingBet = this.outstandingBet + this.betInput;
+
+      this.connection.emit('player-bet-message', {
+        playerAddress: this.address,
+        gameId: this.gameId,
+        betMessage: betMessage
+      });
+      this.needsBet = false;
+    }
+
+  }
+
+  foldClick() {
+    //TODO fold message
     const betMessage: iBetMessage = {
-      newBetAmount: this.betInput
+      newBetAmount: this.betInput,
+      fold: true
     };
-    this.outstandingBet = this.outstandingBet + this.betInput;
 
     this.connection.emit('player-bet-message', {
       playerAddress: this.address,
@@ -63,11 +87,6 @@ export class PlayerGenComponent implements OnInit {
       betMessage: betMessage
     });
     this.needsBet = false;
-  }
-
-  foldClick() {
-    //TODO fold message
-    
   }
 
 }

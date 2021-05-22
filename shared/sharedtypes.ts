@@ -36,6 +36,7 @@ export interface iCard {
 };
 
 export interface iBetMessage {
+    fold: boolean
     newBetAmount: number
 }
 

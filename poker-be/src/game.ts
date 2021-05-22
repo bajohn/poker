@@ -60,22 +60,26 @@ export class Game {
     }
 
     playerBet(playerAddress: string, betMessage: iBetMessage, socketEmitter: SocketEmitter) {
+
         const playerIdx = this.players.findIndex((player) => {
             return player.getAddress() === playerAddress;
         });
         const player = this.players[playerIdx];
-        // TODO validate
-        const newOutstandingBet = betMessage.newBetAmount + player.getOutstandingBet();
-        if (newOutstandingBet > this.activeBet) {
-            this.activeBet = newOutstandingBet;
-            this.raiser = player;
+        const isFolded = betMessage.fold;
+        player.setFolded(isFolded)
+        if (!isFolded) {
+            // TODO validate
+            const newOutstandingBet = betMessage.newBetAmount + player.getOutstandingBet();
+            if (newOutstandingBet > this.activeBet) {
+                this.activeBet = newOutstandingBet;
+                this.raiser = player;
+            }
+
+            player.setOutstandingBet(newOutstandingBet);
         }
 
-        player.newBet(newOutstandingBet);
+        const nextPlayer = this.nextPlayer(playerIdx);
 
-
-        const nextPlayerIdx = (playerIdx + 1) % this.players.length;
-        const nextPlayer = this.players[nextPlayerIdx];
         const nextPlayerOutstanding = nextPlayer.getOutstandingBet();
         const diff = this.activeBet - nextPlayerOutstanding;
 
@@ -83,6 +87,24 @@ export class Game {
             nextPlayer.requestBet(diff);
         }
 
+
+
+
+    }
+
+    private nextPlayer(curIdx: number) {
+        for (let retIdx = (curIdx + 1) % this.players.length;
+            retIdx !== curIdx;
+            retIdx = (retIdx + 1) % this.players.length) {
+            console.log(retIdx)
+            const nextPlayer = this.players[retIdx];
+            if (!nextPlayer.isFolded()) {
+                return nextPlayer
+            }
+        }
+        // Return of false may not be necessary, 
+        // (next player == raiser) may be enough
+        //return false;
     }
 
     startGame() {
@@ -95,7 +117,8 @@ export class Game {
         });
         const firstPlayer = this.players[0]; // TODO: randomize first player
         this.raiser = firstPlayer; // TODO set up blinds
-        firstPlayer.requestBet(this.smallBlind * 2);
+        this.activeBet = this.smallBlind * 2;
+        firstPlayer.requestBet(this.activeBet);
     }
 
     dealCards() {

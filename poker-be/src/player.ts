@@ -40,7 +40,7 @@ export class Player {
     //     this.betNeeded = true;
     // }
 
-    public newBet(newOutstandingBet: number) {
+    public setOutstandingBet(newOutstandingBet: number) {
         this.outstandingBet = newOutstandingBet;
         //this.betNeeded = false;
     }
@@ -51,6 +51,10 @@ export class Player {
 
     public isFolded() {
         return this.folded;
+    }
+
+    public setFolded(isFolded: boolean) {
+        this.folded = isFolded
     }
 
 
