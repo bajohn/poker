@@ -19,6 +19,7 @@ export class PlayerGenComponent implements OnInit {
   betInput = 0;
   minBet = 0;
   errMsg = '';
+  folded = false;
 
   @Input() gameId: string;
   connection: iConnection
@@ -31,6 +32,7 @@ export class PlayerGenComponent implements OnInit {
     this.connection.on('player-joined', (msg) => {
       this.alreadyJoined = true;
     });
+
     this.connection.on('deal-pocket-cards', (cards: iCard[]) => {
       console.log(cards);
       this.cards = cards;
@@ -60,7 +62,7 @@ export class PlayerGenComponent implements OnInit {
       this.errMsg = '';
       const betMessage: iBetMessage = {
         newBetAmount: this.betInput,
-        fold: false 
+        fold: false
       };
       this.outstandingBet = this.outstandingBet + this.betInput;
 
@@ -87,6 +89,8 @@ export class PlayerGenComponent implements OnInit {
       betMessage: betMessage
     });
     this.needsBet = false;
+    this.folded = true;
   }
+  
 
 }

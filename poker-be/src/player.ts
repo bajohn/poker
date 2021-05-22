@@ -32,17 +32,8 @@ export class Player {
         this.socketEmitter('request-bet', { curBet });
     }
 
-    // public needsToBet() {
-    //     return this.betNeeded;
-    // }
-
-    // public setNeedsToBet() {
-    //     this.betNeeded = true;
-    // }
-
     public setOutstandingBet(newOutstandingBet: number) {
         this.outstandingBet = newOutstandingBet;
-        //this.betNeeded = false;
     }
 
     public getOutstandingBet() {

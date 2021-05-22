@@ -5,11 +5,18 @@
 }
 
 .player-gen-container {
-    background-color: lightskyblue;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
     width: 400px;
+}
+
+.player-active {
+    background-color: lightskyblue;
+}
+
+.player-folded {
+    background-color: lightgrey;
 }
 
 .game-state-container {

@@ -1,4 +1,8 @@
-<div class="player-gen-container">
+<div 
+[class.player-gen-container]="true"
+[class.player-active]="!folded"
+[class.player-folded]="folded"
+>
     Player {{getAddress()}}
     <button (click)="join()" [disabled]="alreadyJoined || !gameId">
         Join

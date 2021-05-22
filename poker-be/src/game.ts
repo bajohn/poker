@@ -67,7 +67,13 @@ export class Game {
         const player = this.players[playerIdx];
         const isFolded = betMessage.fold;
         player.setFolded(isFolded)
-        if (!isFolded) {
+        if(isFolded) {
+            // will probably need this - broadcast fold
+            // this.gameSocketEmitter('player-folded', {
+            //     playerAddress: playerAddress
+            // });
+        }
+        else {
             // TODO validate
             const newOutstandingBet = betMessage.newBetAmount + player.getOutstandingBet();
             if (newOutstandingBet > this.activeBet) {
@@ -86,6 +92,10 @@ export class Game {
         if ((nextPlayer !== this.raiser) || diff > 0) {
             nextPlayer.requestBet(diff);
         }
+        else {
+            // step game forward
+            console.log('step game up')
+        }
 
 
 
@@ -96,12 +106,12 @@ export class Game {
         for (let retIdx = (curIdx + 1) % this.players.length;
             retIdx !== curIdx;
             retIdx = (retIdx + 1) % this.players.length) {
-            console.log(retIdx)
             const nextPlayer = this.players[retIdx];
             if (!nextPlayer.isFolded()) {
                 return nextPlayer
             }
         }
+        return this.players[curIdx];
         // Return of false may not be necessary, 
         // (next player == raiser) may be enough
         //return false;

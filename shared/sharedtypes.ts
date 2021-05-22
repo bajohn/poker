@@ -6,7 +6,8 @@ export type wsfeendpoint =
     'player-joined' |
     'deal-pocket-cards' |
     'request-bet' |
-    'update-game-state'
+    'update-game-state' | 
+    'player-folded'
     ;
 
 // Back end listener endpoints
