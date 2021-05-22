@@ -98,10 +98,6 @@ export class Game {
         firstPlayer.requestBet(this.smallBlind * 2);
     }
 
-    // gameStep() {
-    //     this.activePlayer.requestBet
-    // }
-
     dealCards() {
         for (let player of this.players) {
             const cards = this.cards.splice(0, 2);

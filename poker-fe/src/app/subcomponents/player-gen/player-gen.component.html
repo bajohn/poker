@@ -5,14 +5,18 @@
     </button>
 
     <div>
-        Current Bet: {{curBet}}
+        Outstanding Bet: {{outstandingBet}}
     </div>
 
     <input [(ngModel)]="betInput" type="number" />
 
-    <button (click)="makeBet()" [disabled]="!needsBet">
+    <button (click)="makeBetClick()" [disabled]="!needsBet">
         Make bet
     </button>
+    <button (click)="foldClick()" [disabled]="!needsBet">
+        Fold
+    </button>
+
 
     <div *ngFor="let card of cards">
         <div>

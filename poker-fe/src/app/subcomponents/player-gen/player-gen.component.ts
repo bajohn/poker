@@ -15,7 +15,7 @@ export class PlayerGenComponent implements OnInit {
   alreadyJoined = false;
 
   needsBet = false;
-  curBet = 0;
+  outstandingBet = 0;
   betInput = 0;
 
 
@@ -51,11 +51,11 @@ export class PlayerGenComponent implements OnInit {
     return this.address;
   }
 
-  makeBet() {
+  makeBetClick() {
     const betMessage: iBetMessage = {
       newBetAmount: this.betInput
     };
-    this.curBet = this.betInput;
+    this.outstandingBet = this.outstandingBet + this.betInput;
 
     this.connection.emit('player-bet-message', {
       playerAddress: this.address,
@@ -63,6 +63,11 @@ export class PlayerGenComponent implements OnInit {
       betMessage: betMessage
     });
     this.needsBet = false;
+  }
+
+  foldClick() {
+    //TODO fold message
+    
   }
 
 }
