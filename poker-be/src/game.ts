@@ -145,7 +145,6 @@ export class Game {
 
         let curPlayer = this.nextPlayer(bigBlindPlayer);
         while (curPlayer !== smallBlindPlayer) {
-            console.log(curPlayer.getAddress());
             this.setBlind(curPlayer, 0);
             curPlayer = this.nextPlayer(curPlayer);
 
