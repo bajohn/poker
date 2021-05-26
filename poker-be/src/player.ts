@@ -32,8 +32,11 @@ export class Player {
         this.socketEmitter('request-bet', { curBet });
     }
 
+    //
     public setOutstandingBet(newOutstandingBet: number) {
         this.outstandingBet = newOutstandingBet;
+        const betMsg = { outstandingBet: newOutstandingBet };
+        this.socketEmitter('set-outstanding-bet', betMsg);
     }
 
     public getOutstandingBet() {

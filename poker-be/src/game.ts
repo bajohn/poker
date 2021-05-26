@@ -21,6 +21,7 @@ export class Game {
     private activeBet = 0;
     private potSize = 0;
     private smallBlind = 10;
+    private dealerChip: Player = null;
 
     private raiser: Player = null;
 
@@ -61,13 +62,10 @@ export class Game {
 
     playerBet(playerAddress: string, betMessage: iBetMessage, socketEmitter: SocketEmitter) {
 
-        const playerIdx = this.players.findIndex((player) => {
-            return player.getAddress() === playerAddress;
-        });
-        const player = this.players[playerIdx];
+        const player = this.getPlayer(playerAddress);
         const isFolded = betMessage.fold;
         player.setFolded(isFolded)
-        if(isFolded) {
+        if (isFolded) {
             // will probably need this - broadcast fold
             // this.gameSocketEmitter('player-folded', {
             //     playerAddress: playerAddress
@@ -84,12 +82,12 @@ export class Game {
             player.setOutstandingBet(newOutstandingBet);
         }
 
-        const nextPlayer = this.nextPlayer(playerIdx);
+        const nextPlayer = this.nextPlayer(player);
 
         const nextPlayerOutstanding = nextPlayer.getOutstandingBet();
         const diff = this.activeBet - nextPlayerOutstanding;
 
-        if ((nextPlayer !== this.raiser) || diff > 0) {
+        if ((nextPlayer !== this.raiser)) {
             nextPlayer.requestBet(diff);
         }
         else {
@@ -102,20 +100,28 @@ export class Game {
 
     }
 
-    private nextPlayer(curIdx: number) {
-        for (let retIdx = (curIdx + 1) % this.players.length;
+
+    private nextPlayer(player: Player) {
+        return this.adjacentPlayer(player, 1);
+    }
+
+    private prevPlayer(player: Player) {
+        return this.adjacentPlayer(player, -1);
+    }
+
+    private adjacentPlayer(player: Player, incr: 1 | -1) {
+        const curIdx = this.players.indexOf(player);
+        for (let retIdx = (curIdx + incr) % this.players.length;
             retIdx !== curIdx;
-            retIdx = (retIdx + 1) % this.players.length) {
+            retIdx = (retIdx + incr) % this.players.length) {
             const nextPlayer = this.players[retIdx];
             if (!nextPlayer.isFolded()) {
                 return nextPlayer
             }
         }
         return this.players[curIdx];
-        // Return of false may not be necessary, 
-        // (next player == raiser) may be enough
-        //return false;
     }
+
 
     startGame() {
 
@@ -125,10 +131,32 @@ export class Game {
         this.gameSocketEmitter('update-game-state', {
             gameState: this.gameState
         });
-        const firstPlayer = this.players[0]; // TODO: randomize first player
-        this.raiser = firstPlayer; // TODO set up blinds
+
+        const firstIdx = randomInt(this.players.length);
+        const dealer = this.players[firstIdx];
+        this.dealerChip = dealer;
+
+        const smallBlindPlayer = this.nextPlayer(dealer);
+        this.setBlind(smallBlindPlayer, this.smallBlind);
+
+        const bigBlindPlayer = this.nextPlayer(smallBlindPlayer);
+        this.setBlind(bigBlindPlayer, 2 * this.smallBlind);
+        this.raiser = bigBlindPlayer;
+
+        let curPlayer = this.nextPlayer(bigBlindPlayer);
+        while (curPlayer !== smallBlindPlayer) {
+            console.log(curPlayer.getAddress());
+            this.setBlind(curPlayer, 0);
+            curPlayer = this.nextPlayer(curPlayer);
+
+        }
         this.activeBet = this.smallBlind * 2;
+        const firstPlayer = this.nextPlayer(bigBlindPlayer);
         firstPlayer.requestBet(this.activeBet);
+    }
+
+    private setBlind(player: Player, blindAmount: number) {
+        player.setOutstandingBet(blindAmount);
     }
 
     dealCards() {

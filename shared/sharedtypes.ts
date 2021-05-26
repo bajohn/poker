@@ -7,7 +7,8 @@ export type wsfeendpoint =
     'deal-pocket-cards' |
     'request-bet' |
     'update-game-state' | 
-    'player-folded'
+    'player-folded' | 
+    'set-outstanding-bet'
     ;
 
 // Back end listener endpoints
@@ -41,7 +42,7 @@ export interface iBetMessage {
     newBetAmount: number
 }
 
-export type GameState = 'pregame' | 'preflop' 
+export type GameState = 'pregame' | 'preflop' | 'flop' | 'turn' | 'river' | 'showdown'
 
 
 

@@ -42,6 +42,10 @@ export class PlayerGenComponent implements OnInit {
       this.minBet = msg.curBet;
       this.needsBet = true;
     });
+
+    this.connection.on('set-outstanding-bet', (msg) => {
+      this.outstandingBet = msg.outstandingBet;
+    });
   }
 
   join() {
@@ -64,7 +68,7 @@ export class PlayerGenComponent implements OnInit {
         newBetAmount: this.betInput,
         fold: false
       };
-      this.outstandingBet = this.outstandingBet + this.betInput;
+      // this.outstandingBet = this.outstandingBet + this.betInput;
 
       this.connection.emit('player-bet-message', {
         playerAddress: this.address,
