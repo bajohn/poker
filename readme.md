@@ -26,3 +26,15 @@ Local development ports:
 - http://localhost:8000 DynamoDB
 - http://localhost:7950 Elrond testnet
 - ws://localhost:8080/socket.io Angular <-> Express Websocket
+
+
+## Notes
+There was a horrid conflict between Angular's default Karma/Jasmine npm versions, which use socketio v2. This was fixed by bumping the karma libraries to the following in poker-fe/package.json, allowing socketio v4 to be used:
+```    
+    "karma": "~6.3.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage-istanbul-reporter": "~3.0.3",
+    "karma-jasmine": "~4.0.1",
+    "karma-jasmine-html-reporter": "~1.6.0",
+    "karma-safari-launcher": "~1.0.0",
+```
