@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { io } from "socket.io-client";
 import { SocketService } from 'src/app/services/socket.service';
 @Component({
   selector: 'app-upload-wallet',

@@ -26,5 +26,3 @@ Local development ports:
 - http://localhost:8000 DynamoDB
 - http://localhost:7950 Elrond testnet
 - ws://localhost:8080/socket.io Angular <-> Express Websocket
-
-## Next TODO

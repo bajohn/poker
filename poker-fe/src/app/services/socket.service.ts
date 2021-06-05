@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { DefaultEventsMap } from 'socket.io-client/build/typed-events';
 import { wsfeendpoint, wsbeendpoint } from "../../../../shared/sharedtypes";
-import { v4 as uuidv4 } from 'uuid';
 import { iConnection } from '../types/fetypes';
 
 @Injectable({
@@ -13,9 +12,12 @@ export class SocketService {
   private socket: Socket<DefaultEventsMap, DefaultEventsMap>;
   private readonly URL = 'localhost:8080';
   constructor() {
+    console.log('test')
+    console.log(io);
     this.socket = io(this.URL, {
       transports: ["websocket"],
     });
+    console.log(this.socket);
   }
 
   public emit(endpoint: wsbeendpoint, message?: any) {
