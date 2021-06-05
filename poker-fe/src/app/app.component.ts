@@ -19,6 +19,7 @@ export class AppComponent {
   ) {
     socketServ.on('game-created-id', resp => {
       this.gameId = resp.gameId;
+      console.log('game id!');
     });
     socketServ.on('update-game-state', resp => {
       this.gameState = resp.gameState;
@@ -31,6 +32,7 @@ export class AppComponent {
   }
 
   createGameClick() {
+    console.log('click!!');
     this.socketServ.emit('create-game');
   }
 

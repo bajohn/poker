@@ -14,6 +14,7 @@ const dataStore = new DataStore();
 const wsSetup = (io: Server) => {
 
     io.on("connection", (socket: Socket<DefaultEventsMap, DefaultEventsMap>) => {
+        console.log('connection!')
         // game socket endpoints
         socketOn(socket, "open-wallet", walletOpenHandler);
         socketOn(socket, 'create-game', createGameHandler);
