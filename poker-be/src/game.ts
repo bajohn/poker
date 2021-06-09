@@ -54,6 +54,7 @@ export class Game {
             didJoin
         });
         if (didJoin) {
+            console.log('emit', playerAddress);
             this.gameSocketEmitter('player-joined', {
                 playerAddress: playerAddress
             });

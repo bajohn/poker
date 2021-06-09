@@ -29,6 +29,7 @@ export class PlayerGenComponent implements OnInit {
 
   ngOnInit(): void {
     this.connection = this.socketServ.createPlayerConn();
+    console.log('player gen init');
     this.connection.on('player-joined', (msg) => {
       this.alreadyJoined = true;
     });
@@ -95,6 +96,6 @@ export class PlayerGenComponent implements OnInit {
     this.needsBet = false;
     this.folded = true;
   }
-  
+
 
 }

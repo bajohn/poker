@@ -25,6 +25,7 @@ export class AppComponent {
       this.gameState = resp.gameState;
     });
     socketServ.on('player-joined', resp => {
+      console.log('joined!!', resp);
       this.playersInGame.push(
         resp.playerAddress);
     });

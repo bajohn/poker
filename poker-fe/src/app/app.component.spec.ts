@@ -1,7 +1,11 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+
 import { TestBed, ComponentFixtureAutoDetect, async, tick, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { By } from '@angular/platform-browser';
+import { PlayerGenComponent } from './subcomponents/player-gen/player-gen.component';
 
 
 
@@ -9,10 +13,14 @@ fdescribe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        BrowserModule,
+        //AppRoutingModule,
+        FormsModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        PlayerGenComponent
       ],
       providers: [
         { provide: ComponentFixtureAutoDetect, useValue: true }
@@ -31,12 +39,12 @@ fdescribe('AppComponent', () => {
 
     const debugElement = fixture.debugElement;
 
-    const buttons = debugElement.queryAll(By.css('button'));
-    const createButton = buttons[0];
-    const addButton = buttons[1];
+    const createButton = debugElement.queryAll(By.css('button'))[0];
+
+
     // const createGameButton = nativeElement.querySelector('button');
     expect(createButton.nativeElement.textContent).toContain('Create Game');
-    expect(addButton.nativeElement.textContent).toContain('Add Player');
+
 
     createButton.triggerEventHandler('click', null);
 
@@ -44,7 +52,7 @@ fdescribe('AppComponent', () => {
 
 
     for (let i = 0; i < 5000; i++) {
-      if(fixture.componentInstance.gameId) {
+      if (fixture.componentInstance.gameId) {
         break;
       }
       await sleep(1);
@@ -53,7 +61,25 @@ fdescribe('AppComponent', () => {
     console.log('container', gameContainer);
     console.log('done loop')
     expect(gameContainer.nativeElement.textContent).toContain('Players');
-    console.log('eh')
+
+    const addButton = debugElement.queryAll(By.css('button'))[2];
+    expect(addButton.nativeElement.textContent).toContain('Add Player');
+
+    addButton.triggerEventHandler('click', null);
+    addButton.triggerEventHandler('click', null);
+    addButton.triggerEventHandler('click', null);
+    addButton.triggerEventHandler('click', null);
+
+    for (let i = 0; i < 20; i++) {
+      await sleep(100);
+      console.log(fixture.componentInstance.blankPlayerIter);
+      // if (fixture.componentInstance.blankPlayerIter.length === 4) {
+      //   break;
+      // }
+    }
+    const players = debugElement.queryAll(By.css('.player-gen-container')); //nativeElement.querySelector('.game-state-container');
+    console.log('players', fixture.componentInstance.blankPlayerIter);
+    console.log('players query', players);
 
   });
 
