@@ -19,7 +19,7 @@ export class AppComponent {
   ) {
     socketServ.on('game-created-id', resp => {
       this.gameId = resp.gameId;
-      console.log('game id!');
+      console.log('game id!', this.gameId);
     });
     socketServ.on('update-game-state', resp => {
       this.gameState = resp.gameState;

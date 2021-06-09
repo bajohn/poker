@@ -1,7 +1,9 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, ComponentFixtureAutoDetect, async, tick, fakeAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { By } from '@angular/platform-browser';
+
+
 
 fdescribe('AppComponent', () => {
   beforeEach(async(() => {
@@ -12,6 +14,9 @@ fdescribe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      providers: [
+        { provide: ComponentFixtureAutoDetect, useValue: true }
+      ]
     }).compileComponents();
   }));
 
@@ -23,29 +28,32 @@ fdescribe('AppComponent', () => {
 
   it('should create a game which "Create Game" is clicked', async () => {
     const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
 
     const debugElement = fixture.debugElement;
 
     const buttons = debugElement.queryAll(By.css('button'));
     const createButton = buttons[0];
     const addButton = buttons[1];
-    console.log('button?', createButton)
     // const createGameButton = nativeElement.querySelector('button');
     expect(createButton.nativeElement.textContent).toContain('Create Game');
     expect(addButton.nativeElement.textContent).toContain('Add Player');
 
     createButton.triggerEventHandler('click', null);
-    // createGameButton.triggerEventHandler('click', null);
-    console.log('await?')
-    await new Promise(resolve => {
-      setTimeout(resolve, 2000);
-    });
-    console.log('done.')
-    const gameContainer = debugElement.query(By.css('.game-state-container')); //nativeElement.querySelector('.game-state-container');
 
+
+
+
+    for (let i = 0; i < 5000; i++) {
+      if(fixture.componentInstance.gameId) {
+        break;
+      }
+      await sleep(1);
+    }
+    const gameContainer = debugElement.query(By.css('.game-state-container')); //nativeElement.querySelector('.game-state-container');
     console.log('container', gameContainer);
+    console.log('done loop')
     expect(gameContainer.nativeElement.textContent).toContain('Players');
+    console.log('eh')
 
   });
 
@@ -62,3 +70,10 @@ fdescribe('AppComponent', () => {
   //   expect(compiled.querySelector('.content span').textContent).toContain('poker-fe app is running!');
   // });
 });
+
+const sleep = (sleepMs) => {
+  return new Promise(resolve => {
+    setTimeout(resolve, sleepMs);
+  })
+}
+
