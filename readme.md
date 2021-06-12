@@ -1,5 +1,9 @@
 # Poker Server
 
+## Next TODO
+- Testing via `ng test` using Jasmine/Karma was not ideal since we're trying to do e2e tests. Jasmine/Karma expects the backend to be mocked and seems to be more aimed at unit testing components (in isolation).
+- Instead use `ng e2e` which should be better for integration testing including the running server
+
 ## Development
 Run backend server via 
 ```

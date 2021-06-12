@@ -11,6 +11,8 @@ import { PlayerGenComponent } from './subcomponents/player-gen/player-gen.compon
 
 fdescribe('AppComponent', () => {
   beforeEach(async(() => {
+    console.log('before each')
+    jasmine.clock().install();
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
@@ -28,6 +30,10 @@ fdescribe('AppComponent', () => {
     }).compileComponents();
   }));
 
+  afterEach(function () {
+    jasmine.clock().uninstall();
+  });
+
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
@@ -36,7 +42,7 @@ fdescribe('AppComponent', () => {
 
   it('should create a game which "Create Game" is clicked', async () => {
     const fixture = TestBed.createComponent(AppComponent);
-
+    fixture.detectChanges();
     const debugElement = fixture.debugElement;
 
     const createButton = debugElement.queryAll(By.css('button'))[0];
@@ -55,8 +61,10 @@ fdescribe('AppComponent', () => {
       if (fixture.componentInstance.gameId) {
         break;
       }
-      await sleep(1);
+      //await sleep(1);
     }
+    jasmine.clock().tick(1000);
+
     const gameContainer = debugElement.query(By.css('.game-state-container')); //nativeElement.querySelector('.game-state-container');
     console.log('container', gameContainer);
     console.log('done loop')
@@ -71,15 +79,12 @@ fdescribe('AppComponent', () => {
     addButton.triggerEventHandler('click', null);
 
     for (let i = 0; i < 20; i++) {
-      await sleep(100);
-      console.log(fixture.componentInstance.blankPlayerIter);
+      //await sleep(100);
       // if (fixture.componentInstance.blankPlayerIter.length === 4) {
       //   break;
       // }
     }
-    const players = debugElement.queryAll(By.css('.player-gen-container')); //nativeElement.querySelector('.game-state-container');
-    console.log('players', fixture.componentInstance.blankPlayerIter);
-    console.log('players query', players);
+    // const players = debugElement.nativeElement;// debugElement.queryAll(By.css('.player-gen-container')); //nativeElement.querySelector('.game-state-container');
 
   });
 
