@@ -10,6 +10,7 @@ describe('workspace-project App', () => {
   });
 
   it('should create players', async () => {
+    // Remember to start the node backend!
     await page.navigateTo();
 
     await element(by.buttonText('Create Game')).click();
