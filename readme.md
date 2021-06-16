@@ -1,9 +1,10 @@
 # Poker Server
 
 ## Next TODO
-- Testing via `ng test` using Jasmine/Karma was not ideal since we're trying to do e2e tests. Jasmine/Karma expects the backend to be mocked and seems to be more aimed at unit testing components (in isolation).
-- Tried using `ng e2e` which should've been better for integration testing including the running server. BUT Protractor doesn't have the best `--watch` detection and fast iterations, and apparently is being deprecated by the Angular team?
-- Try cypress - this repo has a schamatic for `ng`  https://github.com/briebug/cypress-schematic
+- Cypress seems perfect. 
+
+Flesh out `poker-fe/cypress/integration/spec.ts`
+Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
 ## Development
 Run backend server via 
@@ -42,4 +43,12 @@ There was a horrid conflict between Angular's default Karma/Jasmine npm versions
     "karma-jasmine": "~4.0.1",
     "karma-jasmine-html-reporter": "~1.6.0",
     "karma-safari-launcher": "~1.0.0",
+```
+
+Due to Protractor being deprecated by the Angular team and Karma/Jasmine not playing nicely with socketio, we've moved to Cypress.
+
+Installed via 
+
+```
+ng run poker-fe:cypress-open
 ```
