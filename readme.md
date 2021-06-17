@@ -6,6 +6,8 @@
 Flesh out `poker-fe/cypress/integration/spec.ts`
 Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
+- Figure out how to set random seeds for testing.
+
 ## Development
 Run backend server via 
 ```
