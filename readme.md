@@ -7,6 +7,28 @@ Flesh out `poker-fe/cypress/integration/spec.ts`
 Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
 - Figure out how to set random seeds for testing.
+PROPOSITION:
+- Create setSeed endpoint
+- setSeed takes an argument of which series of hands to run 
+For example, seed values determine a series of hands:
+[
+    // idx 0
+    [
+        [a0,a1,a2,...].
+        [b0,b1,b2,...]
+        ...
+    ],
+    // idx 1
+    [
+        [c0,c1,c2,...],
+        [d0,d1,d2,...] 
+    ],
+    ...
+]
+- The series of hands is injected into game.ts to overwrite the RNG
+- This endpoint is hit from either cypress itself (preferable?), or from the ng app running in test mode.
+- Make sure this endpoint only works on local test mode! npm scripts should do this sufficiently.
+
 
 ## Development
 Run backend server via 
