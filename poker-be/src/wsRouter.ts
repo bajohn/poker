@@ -23,7 +23,11 @@ const wsSetup = (io: Server) => {
         // player socket endpoints
         socketOn(socket, 'player-join', playerJoinHandler);
         socketOn(socket, 'player-bet-message', playerBetMessageHandler);
+
         // TODO next: socketOn(socket, 'bet-response', playerJoinHandler);
+
+        // dev only endpoints
+        console.log('ENVVV', process.env.NODE_ENV);
     });
 }
 
