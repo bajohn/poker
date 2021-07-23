@@ -39,6 +39,8 @@ if (process.env.NODE_ENV === 'development') {
 const port = 8080; // default port to listen
 http.listen(port, () => {
     // tslint:disable-next-line:no-console
-    console.log(`server started at http://localhost:${port}`);
+    console.log(`Server started at http://localhost:${port}`);
+    console.log(`Node env: ${process.env.NODE_ENV}`)
+    
 });
 

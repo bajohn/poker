@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
 import { GameState, iBetMessage, iCard, Suit } from "../../shared/sharedtypes";
 import { randomInt } from 'crypto';
-import { SocketEmitter } from "./types/betypes";
+import { iTestParams, SocketEmitter } from "./types/betypes";
 import { TestData } from "./testdata";
 
 export class Game {
@@ -27,16 +27,9 @@ export class Game {
     private raiser: Player = null;
 
     // For testing only
-    private presetHands: iCard[][] = [];
+    private testParams: iTestParams = null;
 
-    constructor(socketEmitter: SocketEmitter, handsId?: string) {
-        // TODO guard here? Dev only
-        if (handsId) {
-            const testData = new TestData();
-            this.presetHands = testData.getHands(handsId);
-        }
-
-
+    constructor(socketEmitter: SocketEmitter) {
         this.cards = this.generateCards();
         this.gameSocketEmitter = socketEmitter;
     }
@@ -179,14 +172,14 @@ export class Game {
 
     setPresetHands(testId: string) {
         const testData = new TestData();
-        this.presetHands = testData.getHands(testId);
+        this.testParams = testData.getTest(testId);
     }
 
 
     private shuffleCards() {
 
-        if (this.presetHands.length > 0) {
-            this.cards = this.presetHands.pop();
+        if (this.testParams) {
+            this.cards = this.testParams.hands.pop();
         } else {
             const localCards: iCard[] = [].concat(this.cards);
             const resp = [];
