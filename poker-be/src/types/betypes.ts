@@ -18,6 +18,7 @@ export interface iServerWsCb {
 
 export interface iTestParams {
     hands: iCard[][]
+    firstPlayerIdx: number
 }
 
 export type SocketEmitter = (endpoint: wsfeendpoint, message: any) => void;

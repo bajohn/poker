@@ -9,8 +9,9 @@ export class TestData {
 
     // TODO typing here
     getTest(testId: string): iTestParams {
-        const lookup: { [key: string]: any } = {
+        const lookup: { [key: string]: iTestParams } = {
             test1: {
+                firstPlayerIdx: 0,
                 hands: [
                     [
                         {

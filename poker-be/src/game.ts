@@ -137,7 +137,7 @@ export class Game {
             gameState: this.gameState
         });
 
-        const firstIdx = randomInt(this.players.length);
+        const firstIdx = this.testParams ? this.testParams.firstPlayerIdx : randomInt(this.players.length);
         const dealer = this.players[firstIdx];
         this.dealerChip = dealer;
 
