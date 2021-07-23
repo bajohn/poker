@@ -26,8 +26,8 @@ const wsSetup = (io: Server) => {
 
         // TODO next: socketOn(socket, 'bet-response', playerJoinHandler);
 
-        // dev only endpoints
-        console.log('ENVVV', process.env.NODE_ENV);
+
+
     });
 }
 
@@ -47,4 +47,4 @@ const socketEmitter = (
 
 
 
-export { wsSetup };
+export { wsSetup, dataStore };

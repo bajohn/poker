@@ -4,6 +4,9 @@
 
 <div class="game-state-container" *ngIf="gameId">
     <div>
+        Game ID {{gameId}}
+    </div>
+    <div>
         Players Count {{blankPlayerIter.length}}
     </div>
     <div *ngFor="let player of playersInGame">

@@ -5,6 +5,7 @@ import { Player } from "./player";
 import { GameState, iBetMessage, iCard, Suit } from "../../shared/sharedtypes";
 import { randomInt } from 'crypto';
 import { SocketEmitter } from "./types/betypes";
+import { TestData } from "./testdata";
 
 export class Game {
     private dealer = new Dealer();
@@ -25,7 +26,17 @@ export class Game {
 
     private raiser: Player = null;
 
-    constructor(socketEmitter: SocketEmitter) {
+    // For testing only
+    private presetHands: iCard[][] = [];
+
+    constructor(socketEmitter: SocketEmitter, handsId?: string) {
+        // TODO guard here? Dev only
+        if (handsId) {
+            const testData = new TestData();
+            this.presetHands = testData.getHands(handsId);
+        }
+
+
         this.cards = this.generateCards();
         this.gameSocketEmitter = socketEmitter;
     }
@@ -166,17 +177,28 @@ export class Game {
         }
     }
 
+    setPresetHands(testId: string) {
+        const testData = new TestData();
+        this.presetHands = testData.getHands(testId);
+    }
+
 
     private shuffleCards() {
-        const localCards: iCard[] = [].concat(this.cards);
-        const resp = [];
 
-        while (localCards.length > 0) {
-            const nextIdx = randomInt(localCards.length);
-            const nextCard = localCards.splice(nextIdx, 1)[0];
-            resp.push(nextCard);
+        if (this.presetHands.length > 0) {
+            this.cards = this.presetHands.pop();
+        } else {
+            const localCards: iCard[] = [].concat(this.cards);
+            const resp = [];
+
+            while (localCards.length > 0) {
+                const nextIdx = randomInt(localCards.length);
+                const nextCard = localCards.splice(nextIdx, 1)[0];
+                resp.push(nextCard);
+            }
+            this.cards = resp;
         }
-        this.cards = resp;
+
     }
 
     private getPlayer(playerAddress: string) {
@@ -205,7 +227,5 @@ export class Game {
         }
         return ret;
     }
-
-
 
 }

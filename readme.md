@@ -8,8 +8,8 @@ Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
 - Figure out how to set random seeds for testing.
 PROPOSITION:
-- Create setSeed endpoint
-- setSeed takes an argument of which series of hands to run 
+- Create test-hand endpoint
+- test-hand takes an argument of which series of hands to run 
 For example, seed values determine a series of hands:
 [
     // idx 0

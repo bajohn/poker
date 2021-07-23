@@ -2,6 +2,7 @@
 import { iBetMessage } from "../../shared/sharedtypes";
 import { Game } from "./game";
 import { SocketEmitter } from "./types/betypes";
+import { dataStore } from "./wsRouter";
 
 
 
@@ -34,6 +35,19 @@ export class DataStore {
     startGame(gameId: string) {
         const game = this.getGame(gameId);
         return game.startGame();
+    }
+
+
+
+    // dev only
+    latestGameId() {
+        const game = this.games[this.games.length - 1];
+        return game.getGameId();
+    }
+
+    setTestId(gameId: string, testId: string) {
+        const game = dataStore.getGame(gameId);
+        game.setPresetHands(testId);
     }
 
     private getGame(gameId: string) {
