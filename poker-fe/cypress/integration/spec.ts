@@ -19,6 +19,9 @@ it('Contains Create Game button', () => {
     cy.get('.game-state-container').contains('Game State: pregame');
 
     cy.get('button:contains("Start Game")').click();
+
+    cy.get('#player-0>button.fold-button').click();
+    cy.get('#player-1>button.bet-button').click();
   });
 
 

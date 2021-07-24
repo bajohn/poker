@@ -22,6 +22,7 @@ export class PlayerGenComponent implements OnInit {
   folded = false;
 
   @Input() gameId: string;
+  @Input() playerIdx: number;
   connection: iConnection
   constructor(
     private socketServ: SocketService
@@ -79,6 +80,10 @@ export class PlayerGenComponent implements OnInit {
       this.needsBet = false;
     }
 
+  }
+
+  getId() {
+    return `player-${this.playerIdx}`;
   }
 
   foldClick() {

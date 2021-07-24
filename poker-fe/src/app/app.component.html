@@ -28,6 +28,6 @@
 <button (click)="addPlayerClick()" [disabled]="!gameId">
     Add Player
 </button>
-<app-player-gen [gameId]="gameId" *ngFor="let player of blankPlayerIter">
+<app-player-gen [gameId]="gameId" [playerIdx]="i" *ngFor="let player of blankPlayerIter; index as i;" class="all-player-container">
 
 </app-player-gen>

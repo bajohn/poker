@@ -1,9 +1,12 @@
-<div 
-[class.player-gen-container]="true"
-[class.player-active]="!folded"
-[class.player-folded]="folded"
->
-    Player {{getAddress()}}
+<div [class.player-gen-container]="true" [id]="getId()" [class.player-active]="!folded" [class.player-folded]="folded">
+    <div>
+        Player {{playerIdx}}
+    </div>
+
+    <div>
+        Address {{getAddress()}}
+    </div>
+
     <button (click)="join()" [disabled]="alreadyJoined || !gameId">
         Join
     </button>
@@ -16,10 +19,10 @@
     </div>
     <input [(ngModel)]="betInput" type="number" />
 
-    <button (click)="makeBetClick()" [disabled]="!needsBet">
+    <button (click)="makeBetClick()" [disabled]="!needsBet" class="bet-button">
         Make bet
     </button>
-    <button (click)="foldClick()" [disabled]="!needsBet">
+    <button (click)="foldClick()" [disabled]="!needsBet" class="fold-button">
         Fold
     </button>
 
