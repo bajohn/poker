@@ -23,7 +23,7 @@ export class Player {
         return this.address;
     }
 
-    public dealCards(cards: iCard[]) {
+    public dealPocketCards(cards: iCard[]) {
         this.hand = cards;
         this.socketEmitter('deal-pocket-cards', cards);
     }

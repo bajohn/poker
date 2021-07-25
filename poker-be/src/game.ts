@@ -97,7 +97,12 @@ export class Game {
         }
         else {
             // step game forward
-            console.log('step game up')
+            console.log('step game up');
+            this.gameState = 'flop';
+            this.gameSocketEmitter('update-game-state', {
+                gameState: this.gameState
+            });
+
         }
 
 
@@ -128,10 +133,11 @@ export class Game {
     }
 
 
+
     startGame() {
 
         this.shuffleCards();
-        this.dealCards();
+        this.dealPocketCards();
         this.gameState = 'preflop';
         this.gameSocketEmitter('update-game-state', {
             gameState: this.gameState
@@ -163,12 +169,17 @@ export class Game {
         player.setOutstandingBet(blindAmount);
     }
 
-    dealCards() {
+    dealPocketCards() {
         for (let player of this.players) {
             const cards = this.cards.splice(0, 2);
-            player.dealCards(cards);
+            player.dealPocketCards(cards);
         }
     }
+
+    dealTableCard() {
+
+    }
+
 
     setPresetHands(testId: string) {
         const testData = new TestData();
