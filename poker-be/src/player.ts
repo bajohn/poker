@@ -27,6 +27,10 @@ export class Player {
         this.hand = cards;
         this.socketEmitter('deal-pocket-cards', cards);
     }
+    public dealTableCard(card: iCard) {
+        this.socketEmitter('deal-table-card', card);
+    }
+
 
     public requestBet(curBet: number) {
         this.socketEmitter('request-bet', { curBet });

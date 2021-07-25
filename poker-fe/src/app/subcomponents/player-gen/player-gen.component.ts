@@ -11,7 +11,8 @@ import { iCard, iBetMessage } from '../../../../../shared/sharedtypes';
 })
 export class PlayerGenComponent implements OnInit {
   private address = uuidv4();
-  cards: iCard[] = []
+  pocketCards: iCard[] = [];
+  tableCards: iCard[] = [];
   alreadyJoined = false;
 
   needsBet = false;
@@ -37,8 +38,14 @@ export class PlayerGenComponent implements OnInit {
 
     this.connection.on('deal-pocket-cards', (cards: iCard[]) => {
       console.log(cards);
-      this.cards = cards;
+      this.pocketCards = cards;
     });
+
+    this.connection.on('deal-table-card', (card: iCard) => {
+      console.log(card);
+      this.tableCards.push(card);
+    });
+
     this.connection.on('request-bet', (msg) => {
       this.betInput = msg.curBet;
       this.minBet = msg.curBet;
@@ -62,6 +69,7 @@ export class PlayerGenComponent implements OnInit {
   }
 
   makeBetClick() {
+    console.log('bet click', this.playerIdx)
     if (this.betInput < this.minBet) {
       this.errMsg = `Error: minimum bet ${this.minBet}`;
     } else {
@@ -100,6 +108,14 @@ export class PlayerGenComponent implements OnInit {
     });
     this.needsBet = false;
     this.folded = true;
+  }
+
+  checkClick() {
+
+  }
+
+  canCheck() {
+    return this.minBet === 0 && this.needsBet
   }
 
 

@@ -28,9 +28,7 @@
 <button (click)="addPlayerClick()" [disabled]="!gameId">
     Add Player
 </button>
-<div>
-    Table Cards
-</div>
+
 <app-player-gen [gameId]="gameId" [playerIdx]="i" *ngFor="let player of blankPlayerIter; index as i;" class="all-player-container">
 
 </app-player-gen>

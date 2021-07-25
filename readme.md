@@ -1,12 +1,12 @@
 # Poker Server
 
 ## Next TODO
-- Cypress seems perfect. 
-
 Flesh out `poker-fe/cypress/integration/spec.ts`
 Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
-- Ready to get into "Step Game Up": deal out table cards.
+- big blind needs an opportunity to raise!
+- check button - implement as bet of 0
+- cypress test actually changing bet amounts
 
 ## Development
 Run backend server via 

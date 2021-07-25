@@ -29,6 +29,7 @@ export class DataStore {
 
     playerBetResponse(playerAddress: string, gameId: string, betMessage: iBetMessage, socketEmitter: SocketEmitter) {
         const game = this.getGame(gameId);
+        console.log('BET RECEIVED')
         return game.playerBet(playerAddress, betMessage, socketEmitter);
     }
 

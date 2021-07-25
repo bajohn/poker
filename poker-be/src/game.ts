@@ -14,7 +14,8 @@ export class Game {
     private gameSocketEmitter: SocketEmitter;
 
     private gameId = uuidv4();
-    cards: iCard[];
+    private cardDeck: iCard[];
+    private tableCards: iCard[];
 
     // Game state stuff
     private gameState: GameState = 'pregame';
@@ -30,7 +31,7 @@ export class Game {
     private testParams: iTestParams = null;
 
     constructor(socketEmitter: SocketEmitter) {
-        this.cards = this.generateCards();
+        this.cardDeck = this.generateCards();
         this.gameSocketEmitter = socketEmitter;
     }
 
@@ -96,18 +97,38 @@ export class Game {
             nextPlayer.requestBet(diff);
         }
         else {
-            // step game forward
-            console.log('step game up');
-            this.gameState = 'flop';
-            this.gameSocketEmitter('update-game-state', {
-                gameState: this.gameState
-            });
-
+            this.advanceGameStage();
         }
+    }
+
+    advanceGameStage() {
 
 
+        if (this.gameState === 'preflop') {
+            this.gameState = 'flop';
+            this.dealTableCard();
+            this.dealTableCard();
+            this.dealTableCard();
 
-
+        } else if (this.gameState === 'flop') {
+            this.dealTableCard();
+            this.gameState = 'turn';
+        } else if (this.gameState === 'turn') {
+            this.dealTableCard();
+            this.gameState = 'river';
+        }
+        else if (this.gameState === 'river') {
+            this.gameState = 'showdown';
+        }
+        if (this.gameState !== 'showdown') {
+            this.raiser = this.nextPlayer(this.dealerChip);
+            this.raiser.requestBet(0);
+        }
+        // step game forward
+        console.log('step game up', this.gameState);
+        this.gameSocketEmitter('update-game-state', {
+            gameState: this.gameState
+        });
     }
 
 
@@ -135,7 +156,7 @@ export class Game {
 
 
     startGame() {
-
+        this.tableCards = [];
         this.shuffleCards();
         this.dealPocketCards();
         this.gameState = 'preflop';
@@ -171,13 +192,15 @@ export class Game {
 
     dealPocketCards() {
         for (let player of this.players) {
-            const cards = this.cards.splice(0, 2);
+            const cards = this.cardDeck.splice(0, 2);
             player.dealPocketCards(cards);
         }
     }
 
     dealTableCard() {
-
+        const card = this.cardDeck.shift();
+        this.tableCards.push(card);
+        this.players.forEach(player => player.dealTableCard(card))
     }
 
 
@@ -190,9 +213,9 @@ export class Game {
     private shuffleCards() {
 
         if (this.testParams) {
-            this.cards = this.testParams.hands.pop();
+            this.cardDeck = this.testParams.hands.pop();
         } else {
-            const localCards: iCard[] = [].concat(this.cards);
+            const localCards: iCard[] = [].concat(this.cardDeck);
             const resp = [];
 
             while (localCards.length > 0) {
@@ -200,7 +223,7 @@ export class Game {
                 const nextCard = localCards.splice(nextIdx, 1)[0];
                 resp.push(nextCard);
             }
-            this.cards = resp;
+            this.cardDeck = resp;
         }
 
     }

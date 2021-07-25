@@ -22,12 +22,26 @@
     <button (click)="makeBetClick()" [disabled]="!needsBet" class="bet-button">
         Make bet
     </button>
+    <button (click)="checkClick()" [disabled]="!canCheck()" class="check-button">
+        Check
+    </button>
     <button (click)="foldClick()" [disabled]="!needsBet" class="fold-button">
         Fold
     </button>
 
+    <div>
+        Pocket Cards
+    </div>
+    <div *ngFor="let card of pocketCards">
+        <div>
+            Card: {{card.value}}{{card.suit}}
+        </div>
+    </div>
 
-    <div *ngFor="let card of cards">
+    <div>
+        Table Cards
+    </div>
+    <div *ngFor="let card of tableCards">
         <div>
             Card: {{card.value}}{{card.suit}}
         </div>
