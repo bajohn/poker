@@ -4,8 +4,9 @@
 Flesh out `poker-fe/cypress/integration/spec.ts`
 Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
-- big blind needs an opportunity to raise!
-- check button - implement as bet of 0
+- finish testing big blind raise explicit cases
+- (optional) make the initial test setup automated (n players)
+- (optional) check button - implement as bet of 0
 - cypress test actually changing bet amounts
 
 ## Development

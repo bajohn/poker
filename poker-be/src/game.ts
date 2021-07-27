@@ -87,18 +87,35 @@ export class Game {
 
             player.setOutstandingBet(newOutstandingBet);
         }
+        this.nextBet(player)
+    }
 
-        const nextPlayer = this.nextPlayer(player);
+    private nextBet(curPlayer: Player) {
+        const nextPlayer = this.nextPlayer(curPlayer);
 
         const nextPlayerOutstanding = nextPlayer.getOutstandingBet();
         const diff = this.activeBet - nextPlayerOutstanding;
+        console.log('raiser', this.raiser.getAddress());
+        // special case: give the big blind an opportunity to raise if no one has yet
+        if(this.gameState === 'preflop' && nextPlayer === this.bigBlindPlayer() && this.activeBet === this.smallBlind * 2) {
 
-        if ((nextPlayer !== this.raiser)) {
+            this.raiser = this.nextPlayer(nextPlayer);
             nextPlayer.requestBet(diff);
         }
-        else {
+        else 
+        if (
+            nextPlayer === this.raiser
+        ) {
+
             this.advanceGameStage();
         }
+        else {
+            nextPlayer.requestBet(diff);
+        }
+    }
+
+    private bigBlindPlayer() {
+        return this.nextPlayer(this.nextPlayer(this.dealerChip));
     }
 
     advanceGameStage() {
@@ -182,8 +199,7 @@ export class Game {
 
         }
         this.activeBet = this.smallBlind * 2;
-        const firstPlayer = this.nextPlayer(bigBlindPlayer);
-        firstPlayer.requestBet(this.activeBet);
+        this.nextBet(bigBlindPlayer);
     }
 
     private setBlind(player: Player, blindAmount: number) {
