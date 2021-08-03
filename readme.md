@@ -4,10 +4,10 @@
 Flesh out `poker-fe/cypress/integration/spec.ts`
 Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
-- finish testing big blind raise explicit cases
 - (optional) make the initial test setup automated (n players)
 - (optional) check button - implement as bet of 0
-- cypress test actually changing bet amounts
+- further cypress test actually changing bet amounts
+- ready to start hand determining engine?
 
 ## Development
 Run backend server via 
