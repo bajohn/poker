@@ -11,13 +11,13 @@
         Join
     </button>
 
-    <div>
+    <div class="outstanding-bet"> 
         Outstanding Bet: {{outstandingBet}}
     </div>
     <div class="error-text">
         {{errMsg}}
     </div>
-    <input [(ngModel)]="betInput" type="number" />
+    <input [(ngModel)]="betInput" type="number" class="bet-amount" />
 
     <button (click)="makeBetClick()" [disabled]="!needsBet" class="bet-button">
         Make bet
