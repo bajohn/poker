@@ -66,7 +66,7 @@ it('Allows the big blind to check, but decides not raise, resulting in flop', ()
   });
 });
 
-it('Allows the big blind to raise, which causes the other player to call', () => {
+it('Allows the big blind to raise, followed by the other players calling', () => {
   cy.visit('/');
 
   cy.get('button:contains("Create Game")').click();

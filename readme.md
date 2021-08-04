@@ -6,8 +6,7 @@ Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
 - (optional) make the initial test setup automated (n players)
 - (optional) check button - implement as bet of 0
-- further cypress test actually changing bet amounts
-- ready to start hand determining engine?
+- Finish implementing hand permuter + evaluator
 
 ## Development
 Run backend server via 
