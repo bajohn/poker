@@ -11,7 +11,9 @@ export const permuteCards = (cards: iCard[], permSize: number) => {
             const nextPerm = [].concat(perm);
             nextPerm.push(cards[i]);
             ret.push(nextPerm);
-        } 
+        }
     }
     return ret;
 }
+
+export const rankSort = (cards: iCard[]) => cards.sort((a, b) => a.value - b.value);
