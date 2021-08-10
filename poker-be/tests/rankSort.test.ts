@@ -11,7 +11,7 @@ describe('Rank Hand Sort Unit Test', () => {
         const sortedHand = rankSort(randHand);
         // assert monotonically non-decreasing
         for (let i = 0; i < sortedHand.length - 1; i++) {
-            assert.isAtMost(sortedHand[i].value, sortedHand[i + 1].value);
+            assert.isAtLeast(sortedHand[i].value, sortedHand[i + 1].value);
         }
     });
 
