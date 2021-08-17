@@ -6,6 +6,24 @@ Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
 - (optional) make the initial test setup automated (n players)
 - (optional) check button - implement as bet of 0
+
+Hand values:
+- Max number of kickers is 5
+- Need two digits per kicker
+- 10 digits total reserved for kickers
+- Therefore
+    - 1e0*(kicker 1 ) + 1e2*(kicker 2) + 1e4*(kicker 3)+ 1e6*(kicker 4)+ 1e8*(kicker 5)
+    - 1e10 pair
+    - 1e14 two pair (reserve four digits for high/low pair value)
+    - 1e16 three of kind
+    - 1e18 straight
+    - 1e20 flush
+    - 1e22 full house (reserve four digits for high/low triple/pair value)
+    - 1e26 four of a kind
+    - 1e28 straight flush
+
+
+
 - Add a couple test cases for hand permuter 
 - Write evaluator + test cases
 

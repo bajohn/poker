@@ -28,41 +28,59 @@ export const rankSort = (cards: iCard[]) => cards.sort((a, b) => b.value - a.val
 export const getMatches = (cards: iCard[]) => {
 
     const sortedCards = rankSort(cards);
-    let matchCtr = 0;
-    const kickers = [];
-    const matches: matches[] = [];
-    for (let i = 1; i < sortedCards.length; i++) {
-        if (sortedCards[i - 1].value === sortedCards[i].value) {
-            matchCtr += 1;
+    const grouped: matches[] = [{ value: cards.shift().value, count: 1 }];
+
+    // Group all cards into match objects (whether cards are alone or are part of a pair+)
+    for (const card of sortedCards) {
+        if (!grouped || grouped[0].value === card.value) {
+            grouped[0].count += 1;
         } else {
-            if (matchCtr > 0) {
-                matches.push({
-                    value: sortedCards[i].value,
-                    count: matchCtr
-                });
-                matchCtr = 0;
-            } else {
-                kickers.push(sortedCards[i].value);
-            }
+            grouped.unshift({ value: card.value, count: 1 })
         }
     }
+
+    // Separate pairs+ from one-offs (kickers)
+    const { matches, kickers } = grouped.reduce((lv, cv) => {
+        if (cv.count > 1) {
+            lv.matches.push(cv);
+        } else {
+            lv.kickers.push(cv.value);
+        }
+        return lv;
+    }, { matches: [], kickers: [] })
+
+    matches.sort((a, b) => {
+        // three of a kind before pair
+        const ret = b.count - a.count;
+        if (ret === 0) {
+            // two pair: sort by value
+            return b.value - a.value;
+        }
+        return ret;
+    });
     return { matches, kickers };
 }
 
-export const classifyMatches = (cards: iCard[]) => {
+export const valuateMatches = (cards: iCard[]) => {
     if (cards.length !== 5) {
-        throw Error('Incorrect sized card array sent to classifyMatches()!')
+        throw Error('Incorrect sized card array sent to valuateMatches()!')
     }
     const { matches, kickers } = getMatches(cards);
     if (matches.length === 2) {
-        if (matches[0].count === 3 || matches[1].count === 3) {
+        if (matches[0].count === 3) {
             // full house
+            return 1e24 * matches[0].value + 1e22 * matches[1].value
         } else {
             // two pair 
+            // return 1e14 * matches[0].value + 1e22 * matches[1].value
         }
 
 
     } else if (matches.length === 1) {
+        if (matches[0].count === 4) {
+            // four of kind
+            return 1e26 * matches[0].value + kickers[0];
+        }
         if (matches[0].count === 3) {
             // three of kind
         } else {
