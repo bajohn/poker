@@ -14,7 +14,7 @@ Hand values:
 - Therefore
     - 1e0*(kicker 1 ) + 1e2*(kicker 2) + 1e4*(kicker 3)+ 1e6*(kicker 4)+ 1e8*(kicker 5)
     - 1e10 pair
-    - 1e14 two pair (reserve four digits for high/low pair value)
+    - 1e12 two pair (reserve four digits for high/low pair value)
     - 1e16 three of kind
     - 1e18 straight
     - 1e20 flush
