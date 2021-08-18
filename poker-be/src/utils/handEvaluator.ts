@@ -1,7 +1,5 @@
 import { iCard } from "../../../shared/sharedtypes"
 
-const TEN_K = 1e4;
-const ONE_M = 1e6;
 // Return an array of all possible permutations 
 // of the given cards array 
 export const permuteCards = (cards: iCard[], permSize: number) => {
@@ -21,21 +19,30 @@ export const permuteCards = (cards: iCard[], permSize: number) => {
 // Sort in descending card rank order
 export const rankSort = (cards: iCard[]) => cards.sort((a, b) => b.value - a.value);
 
-// TODO finish this!
-// return
-// array of matches? 
-// [{val, count}, {val, count},...]
-export const getMatches = (cards: iCard[]) => {
+// Return proper valuation for any hand that requires matches:
+// Four of kind, full house, three of kind, two pair, one pair, or no matches (kickers only)
+export const valuateMatchHand = (cards: iCard[]) => {
+    const localCards = [].concat(cards);
+    if (localCards.length !== 5) {
+        throw Error('Incorrect sized card array sent to valuateMatchHand()!')
+    }
+    const { matches, kickers } = getMatches(localCards);
+    return valuateMatches(matches) + valuateKickers(kickers);
+}
+
+// returns matches and kickers ordered descending
+const getMatches = (cards: iCard[]) => {
 
     const sortedCards = rankSort(cards);
     const grouped: matches[] = [{ value: cards.shift().value, count: 1 }];
 
     // Group all cards into match objects (whether cards are alone or are part of a pair+)
     for (const card of sortedCards) {
-        if (!grouped || grouped[0].value === card.value) {
-            grouped[0].count += 1;
+        const lastIdx = grouped.length - 1;
+        if (!grouped || grouped[lastIdx].value === card.value) {
+            grouped[lastIdx].count += 1;
         } else {
-            grouped.unshift({ value: card.value, count: 1 })
+            grouped.push({ value: card.value, count: 1 })
         }
     }
 
@@ -45,6 +52,7 @@ export const getMatches = (cards: iCard[]) => {
             lv.matches.push(cv);
         } else {
             lv.kickers.push(cv.value);
+
         }
         return lv;
     }, { matches: [], kickers: [] })
@@ -61,57 +69,45 @@ export const getMatches = (cards: iCard[]) => {
     return { matches, kickers };
 }
 
-export const valuateMatches = (cards: iCard[]) => {
-    if (cards.length !== 5) {
-        throw Error('Incorrect sized card array sent to valuateMatches()!')
-    }
-    const { matches, kickers } = getMatches(cards);
+
+
+const valuateMatches = (matches: matches[]) => {
+
     if (matches.length === 2) {
         if (matches[0].count === 3) {
             // full house
-            return 1e24 * matches[0].value + 1e22 * matches[1].value
+            return 1e24 * matches[0].value + 1e22 * matches[1].value;
         } else {
             // two pair 
-            // return 1e14 * matches[0].value + 1e22 * matches[1].value
+            return 1e14 * matches[0].value + 1e12 * matches[1].value;
         }
-
 
     } else if (matches.length === 1) {
         if (matches[0].count === 4) {
             // four of kind
-            return 1e26 * matches[0].value + kickers[0];
+            return 1e26 * matches[0].value;
         }
         if (matches[0].count === 3) {
             // three of kind
+            return 1e16 * matches[0].value;
         } else {
             // pair
+            return 1e10 * matches[0].value;
         }
     } else {
-        return -1;
+        // No matches, valuate kickers
+        return 0;
     }
+}
+
+const valuateKickers = (sortedKickers: number[]) => {
+    return sortedKickers.map((el, idx) => {
+        const exp = 2 * (sortedKickers.length - idx - 1)
+        return el * 10 ** exp;
+    }).reduce((lv, cv) => lv + cv, 0);
 }
 
 interface matches {
     value: number
     count: number
 }
-
-
-// Dumb alg
-// export const getMatches = (cards: iCard[]) => {
-//     const matchCounter = cards.reduce((lv: { [key: string]: number }, cv) => {
-//         const curVal = '' + cv.value;
-//         curVal in lv ? lv[curVal] += 1 : lv[curVal] = 1;
-//         return lv;
-//     }, {});
-
-//     // kickers?
-//     const pairs = getMatchCount(matchCounter, 2);
-//     const threeOfKind = getMatchCount(matchCounter, 3);
-//     const fourOfKind = getMatchCount(matchCounter, 4);
-// }
-
-
-// const getMatchCount = (
-//     matchCounter: { [key: string]: number }, num: number
-// ) => Object.keys(matchCounter).reduce((lv, cv) => matchCounter[cv] === num ? lv + 1 : lv, 0)
