@@ -1,26 +1,11 @@
-import { iCard } from "../../../shared/sharedtypes"
+import { iCard } from "../../../../shared/sharedtypes";
+import { rankSort } from "../hand";
 
-// Return an array of all possible permutations 
-// of the given cards array 
-export const permuteCards = (cards: iCard[], permSize: number) => {
-    const ret = cards.map(el => [el]);
-    while (ret[0].length < permSize) {
-        const perm = ret.shift();
-        const nextIdx = cards.indexOf(perm[perm.length - 1]) + 1;
-        for (let i = nextIdx; i < cards.length; i++) {
-            const nextPerm = [].concat(perm);
-            nextPerm.push(cards[i]);
-            ret.push(nextPerm);
-        }
-    }
-    return ret;
-}
-
-// Sort in descending card rank order
-export const rankSort = (cards: iCard[]) => cards.sort((a, b) => b.value - a.value);
-
-// Return proper valuation for any hand that requires matches:
-// Four of kind, full house, three of kind, two pair, one pair, or no matches (kickers only)
+/**
+ *  Return proper valuation for any hand that requires matches:
+ *  Four of kind, full house, three of kind, two pair, 
+ *  one pair, or no matches (kickers only)
+ */
 export const valuateMatchHand = (cards: iCard[]) => {
     const localCards = [].concat(cards);
     if (localCards.length !== 5) {
@@ -28,9 +13,11 @@ export const valuateMatchHand = (cards: iCard[]) => {
     }
     const { matches, kickers } = getMatches(localCards);
     return valuateMatches(matches) + valuateKickers(kickers);
-}
+};
 
-// returns matches and kickers ordered descending
+/**
+* Returns matches and kickers ordered descending
+*/
 const getMatches = (cards: iCard[]) => {
 
     const sortedCards = rankSort(cards);
@@ -67,7 +54,7 @@ const getMatches = (cards: iCard[]) => {
         return ret;
     });
     return { matches, kickers };
-}
+};
 
 
 
@@ -98,14 +85,14 @@ const valuateMatches = (matches: matches[]) => {
         // No matches, valuate kickers
         return 0;
     }
-}
+};
 
 const valuateKickers = (sortedKickers: number[]) => {
     return sortedKickers.map((el, idx) => {
         const exp = 2 * (sortedKickers.length - idx - 1)
         return el * 10 ** exp;
     }).reduce((lv, cv) => lv + cv, 0);
-}
+};
 
 interface matches {
     value: number

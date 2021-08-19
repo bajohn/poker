@@ -9,4 +9,4 @@ export const card = (suit: Suit, value: number): iCard => {
         suit,
         value
     }
-}
+};

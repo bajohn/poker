@@ -1,10 +1,10 @@
 
 
 import { iCard } from '../../shared/sharedtypes';
-import { permuteCards } from '../src/utils/handEvaluator';
 import { card } from '../src/utils/card';
 import { assert } from 'chai';
 import { describe, it } from 'mocha';
+import { permuteCards } from '../src/utils/hand';
 
 describe('Permuter Unit Test', () => {
 

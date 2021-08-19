@@ -1,8 +1,9 @@
 import { iCard } from '../../shared/sharedtypes';
-import { rankSort } from '../src/utils/handEvaluator';
+
 import { card } from '../src/utils/card';
 import { assert } from 'chai';
 import { describe, it } from 'mocha';
+import { rankSort } from '../src/utils/hand';
 
 describe('Rank Hand Sort Unit Test', () => {
 
