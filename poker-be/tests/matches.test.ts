@@ -3,18 +3,9 @@ import { valuateMatchHand } from '../src/utils/valuators/matchValuator';
 import { card } from '../src/utils/card';
 import { assert } from 'chai';
 import { describe, it } from 'mocha';
+import { TestHands } from './helpers/testhands';
 
 describe('Card Match Valuation Unit Test', () => {
-
-    const smallHouse = [card('C', 2), card('D', 2), card('S', 2), card('S', 3), card('D', 3)];
-    const bigHouse = [card('C', 2), card('D', 2), card('H', 3), card('S', 3), card('D', 3)];
-    const bigHouse_2 = [card('C', 5), card('D', 3), card('H', 5), card('S', 3), card('D', 3)];
-    const fourOfKind = [card('C', 2), card('D', 2), card('S', 2), card('H', 2), card('D', 3)];
-    const threeOfKind = [card('C', 2), card('D', 2), card('S', 2), card('H', 3), card('D', 4)];
-    const twoPair = [card('C', 2), card('D', 2), card('S', 3), card('H', 3), card('D', 4)];
-    const twoPair_2 = [card('D', 4), card('H', 2), card('C', 3), card('D', 4), card('S', 2)];
-    const pair = [card('C', 2), card('D', 2), card('S', 3), card('H', 4), card('D', 5)];
-    const noMatches = [card('C', 2), card('D', 3), card('S', 4), card('H', 5), card('D', 7)];
 
     it('Throws an error for an incorrectly sized hand', () => {
         assert.throw(() => valuateMatchHand(hand), 'Incorrect sized card array sent to valuateMatchHand()!');
@@ -23,41 +14,41 @@ describe('Card Match Valuation Unit Test', () => {
     });
 
     it('Properly valuates a full house', () => {
-        assert.equal(valuateMatchHand(smallHouse), 2e24 + 3e22)
-        assert.equal(valuateMatchHand(bigHouse), 3e24 + 2e22)
-        assert.equal(valuateMatchHand(bigHouse_2), 3e24 + 5e22)
+        assert.equal(valuateMatchHand(TestHands.smallHouse.hand), TestHands.smallHouse.expectedValue)
+        assert.equal(valuateMatchHand(TestHands.bigHouse.hand), TestHands.bigHouse.expectedValue)
+        assert.equal(valuateMatchHand(TestHands.bigHouse_2.hand), TestHands.bigHouse_2.expectedValue)
     });
 
     it('Properly valuates four of a kind', () => {
-        assert.equal(valuateMatchHand(fourOfKind), 2e26 + 3);
+        assert.equal(valuateMatchHand(TestHands.fourOfKind.hand), TestHands.fourOfKind.expectedValue);
     });
 
 
     it('Properly valuates three of a kind', () => {
-        assert.equal(valuateMatchHand(threeOfKind), 2e16 + 4e2 + 3);
+        assert.equal(valuateMatchHand(TestHands.threeOfKind.hand), TestHands.threeOfKind.expectedValue);
     });
 
     it('Properly valuates a two pair', () => {
-        assert.equal(valuateMatchHand(twoPair), 3e14 + 2e12 + 4);
-        assert.equal(valuateMatchHand(twoPair_2), 4e14 + 2e12 + 3);
+        assert.equal(valuateMatchHand(TestHands.twoPair.hand), TestHands.twoPair.expectedValue);
+        assert.equal(valuateMatchHand(TestHands.twoPair_2.hand), TestHands.twoPair_2.expectedValue);
 
     });
 
     it('Properly valuates a pair', () => {
-        assert.equal(valuateMatchHand(pair), 2e10 + 5e4 + 4e2 + 3);
+        assert.equal(valuateMatchHand(TestHands.pair.hand), TestHands.pair.expectedValue);
     });
 
     it('Properly valuates kicker-only ranking', () => {
-        assert.equal(valuateMatchHand(noMatches), 7e8 + 5e6 + 4e4 + 3e2 + 2);
+        assert.equal(valuateMatchHand(TestHands.noMatches.hand), TestHands.noMatches.expectedValue);
     });
 
     it('Sanely ranks all the match hands', () => {
-        assert.isAbove(valuateMatchHand(fourOfKind), valuateMatchHand(bigHouse));
-        assert.isAbove(valuateMatchHand(bigHouse), valuateMatchHand(smallHouse));
-        assert.isAbove(valuateMatchHand(smallHouse), valuateMatchHand(threeOfKind));
-        assert.isAbove(valuateMatchHand(threeOfKind), valuateMatchHand(twoPair));
-        assert.isAbove(valuateMatchHand(twoPair), valuateMatchHand(pair));
-        assert.isAbove(valuateMatchHand(pair), valuateMatchHand(noMatches));
+        assert.isAbove(valuateMatchHand(TestHands.fourOfKind.hand), valuateMatchHand(TestHands.bigHouse.hand));
+        assert.isAbove(valuateMatchHand(TestHands.bigHouse.hand), valuateMatchHand(TestHands.smallHouse.hand));
+        assert.isAbove(valuateMatchHand(TestHands.smallHouse.hand), valuateMatchHand(TestHands.threeOfKind.hand));
+        assert.isAbove(valuateMatchHand(TestHands.threeOfKind.hand), valuateMatchHand(TestHands.twoPair.hand));
+        assert.isAbove(valuateMatchHand(TestHands.twoPair.hand), valuateMatchHand(TestHands.pair.hand));
+        assert.isAbove(valuateMatchHand(TestHands.pair.hand), valuateMatchHand(TestHands.noMatches.hand));
     });
 
 });
