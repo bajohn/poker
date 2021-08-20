@@ -1,7 +1,16 @@
 import { iCard } from "../../../shared/sharedtypes";
 import { card } from "../../src/utils/card";
 
-export const TestHands = {
+export const testHands: {
+    [key: string]: {
+        hand: iCard[]
+        expectedValue: number
+    }
+} = {
+    straightFlush: {
+        hand: [card('C', 2), card('C', 3), card('C', 4), card('C', 5), card('C', 6)],
+        expectedValue: 6e28
+    },
     smallHouse: {
         hand: [card('C', 2), card('D', 2), card('S', 2), card('S', 3), card('D', 3)],
         expectedValue: 2e24 + 3e22,
@@ -16,7 +25,7 @@ export const TestHands = {
     },
     fourOfKind: {
         hand: [card('C', 2), card('D', 2), card('S', 2), card('H', 2), card('D', 3)],
-        expectedValue: 2e26 + 3
+        expectedValue: 2e26 + 4
     },
     threeOfKind: {
         hand: [card('C', 2), card('D', 2), card('S', 2), card('H', 3), card('D', 4)],
@@ -39,5 +48,5 @@ export const TestHands = {
         hand: [card('C', 2), card('D', 3), card('S', 4), card('H', 5), card('D', 7)],
         expectedValue: 7e8 + 5e6 + 4e4 + 3e2 + 2
     }
-}
+};
 
