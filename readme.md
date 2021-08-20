@@ -1,13 +1,16 @@
 # Poker Server
 
 ## Next TODO
-Flesh out `poker-fe/cypress/integration/spec.ts`
-Run via `ng run poker-fe:cypress-open` from `./poker-fe`
 
-- (optional) make the initial test setup automated (n players)
+- Finish front end hand flow, now that we have valuation working!
+    - In showdown, permute through all 7 choose 5 hands for each player, determining the best
+    - Create test cases for clear winners 
+- Next, deal with trickier cases
+    - Split pots
+    - Side pots
 - (optional) check button - implement as bet of 0
 
-Hand values:
+## Hand values:
 - Max number of kickers is 5
 - Need two digits per kicker
 - 10 digits total reserved for kickers
@@ -38,6 +41,10 @@ Run frontend via
 cd poker-fe
 ng serve
 ```
+
+Run Cypress front end test via `ng run poker-fe:cypress-open` from `./poker-fe`
+
+
 Set up local dynamodb via 
 https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html
 and run via
