@@ -16,10 +16,6 @@ export class TestData {
                     [
                         {
                             suit: 'C',
-                            value: 1
-                        },
-                        {
-                            suit: 'C',
                             value: 2
                         },
                         {
@@ -31,8 +27,8 @@ export class TestData {
                             value: 4
                         },
                         {
-                            suit: 'D',
-                            value: 1
+                            suit: 'C',
+                            value: 5
                         },
                         {
                             suit: 'D',
@@ -47,8 +43,8 @@ export class TestData {
                             value: 4
                         },
                         {
-                            suit: 'S',
-                            value: 1
+                            suit: 'D',
+                            value: 5
                         },
                         {
                             suit: 'S',
@@ -61,6 +57,10 @@ export class TestData {
                         {
                             suit: 'S',
                             value: 4
+                        },
+                        {
+                            suit: 'S',
+                            value: 5
                         },
 
                     ]

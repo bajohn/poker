@@ -3,7 +3,7 @@
 ## Next TODO
 
 - Finish front end hand flow, now that we have valuation working!
-    - In showdown, permute through all 7 choose 5 hands for each player, determining the best
+    - In showdown, combination through all 7 choose 5 hands for each player, determining the best
     - Create test cases for clear winners 
 - Next, deal with trickier cases
     - Split pots
@@ -25,11 +25,6 @@
     - 1e26 four of a kind
     - 1e28 straight flush
 
-
-
-- Add a couple test cases for hand permuter 
-- Write evaluator + test cases
-
 ## Development
 Run backend server via 
 ```
@@ -43,6 +38,7 @@ ng serve
 ```
 
 Run Cypress front end test via `ng run poker-fe:cypress-open` from `./poker-fe`
+Note the backend server must be running for this to work.
 
 
 Set up local dynamodb via 

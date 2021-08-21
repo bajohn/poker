@@ -1,4 +1,4 @@
-it('Can reach the showdown by continous bets of 0 between two players', () => {
+it.only('Can reach the showdown by continous bets of 0 between two players', () => {
   // Holy shit this works so well.
   cy.visit('/');
 

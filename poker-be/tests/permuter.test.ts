@@ -4,31 +4,34 @@ import { iCard } from '../../shared/sharedtypes';
 import { card } from '../src/utils/card';
 import { assert } from 'chai';
 import { describe, it } from 'mocha';
-import { permuteCards } from '../src/utils/hand';
+import { combineCards } from '../src/utils/hand';
 
-describe('Permuter Unit Test', () => {
+describe('Combination Unit Test', () => {
 
+    it('Throws error for incorrect sized combination requested', () => {
+        assert.throw(() => combineCards(hand.slice(0, 5), 6), 'Size of combination cannot be larger than card array');
+    });
 
-    it('Gets permutations for 3 choose 1 ', () => {
-        const resp = permuteCards(hand.slice(0, 3), 1);
+    it('Gets combinations for 3 choose 1 ', () => {
+        const resp = combineCards(hand.slice(0, 3), 1);
         assert.deepEqual(resp, expected3c1);
     });
 
-    it('Gets permutations for 3 choose 2 ', () => {
-        const resp = permuteCards(hand.slice(0, 3), 2);
+    it('Gets combinations for 3 choose 2 ', () => {
+        const resp = combineCards(hand.slice(0, 3), 2);
         assert.deepEqual(resp, expected3c2);
     });
 
 
 
-    it('Gets permutations for 3 choose 3 ', () => {
-        const resp = permuteCards(hand.slice(0, 3), 3);
+    it('Gets combinations for 3 choose 3 ', () => {
+        const resp = combineCards(hand.slice(0, 3), 3);
         assert.deepEqual(resp, expected3c3);
     });
 
-    it('Gets permutations for 7 choose 5  (actual case used in holdem, choose 5 from (5 table + 2 pocket) cards)', () => {
+    it('Gets combinations for 7 choose 5  (actual case used in holdem, choose 5 from (5 table + 2 pocket) cards)', () => {
 
-        const resp = permuteCards(hand, 5)
+        const resp = combineCards(hand, 5)
         assert.deepEqual(resp, expected7c5);
     });
 })

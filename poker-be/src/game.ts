@@ -26,6 +26,7 @@ export class Game {
     private dealerChip: Player = null;
 
     private raiser: Player = null;
+    private winningPlayer: Player = null;
 
     // For testing only
     private testParams: iTestParams = null;
@@ -97,21 +98,21 @@ export class Game {
         const diff = this.activeBet - nextPlayerOutstanding;
         console.log('raiser', this.raiser.getAddress());
         // special case: give the big blind an opportunity to raise if no one has yet
-        if(this.gameState === 'preflop' && nextPlayer === this.bigBlindPlayer() && this.activeBet === this.smallBlind * 2) {
+        if (this.gameState === 'preflop' && nextPlayer === this.bigBlindPlayer() && this.activeBet === this.smallBlind * 2) {
 
             this.raiser = this.nextPlayer(nextPlayer);
             nextPlayer.requestBet(diff);
         }
-        else 
-        if (
-            nextPlayer === this.raiser
-        ) {
+        else
+            if (
+                nextPlayer === this.raiser
+            ) {
 
-            this.advanceGameStage();
-        }
-        else {
-            nextPlayer.requestBet(diff);
-        }
+                this.advanceGameStage();
+            }
+            else {
+                nextPlayer.requestBet(diff);
+            }
     }
 
     private bigBlindPlayer() {
@@ -133,6 +134,14 @@ export class Game {
         } else if (this.gameState === 'turn') {
             this.dealTableCard();
             this.gameState = 'river';
+            let bestHandVal = 0;
+            for (const player of this.players) {
+                const curVal = player.calcBestHand(this.tableCards);
+                if (curVal > bestHandVal) {
+                    this.winningPlayer = player;
+                }
+            }
+            console.log('Winner is', this.winningPlayer.getAddress());
         }
         else if (this.gameState === 'river') {
             this.gameState = 'showdown';
@@ -140,9 +149,9 @@ export class Game {
         if (this.gameState !== 'showdown') {
             this.raiser = this.nextPlayer(this.dealerChip);
             this.raiser.requestBet(0);
+            // step game forward
+            console.log('step game up', this.gameState);
         }
-        // step game forward
-        console.log('step game up', this.gameState);
         this.gameSocketEmitter('update-game-state', {
             gameState: this.gameState
         });
