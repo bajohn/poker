@@ -20,6 +20,7 @@ export class Game {
     // Game state stuff
     private gameState: GameState = 'pregame';
     // private activePlayer: Player = null;
+    private startStack = 1000;
     private activeBet = 0;
     private potSize = 0;
     private smallBlind = 10;
@@ -45,7 +46,7 @@ export class Game {
     // Returns true if joined,
     // false if already in the game
     joinGame(playerAddress: string, socketEmitter: SocketEmitter) {
-        const newPlayer = new Player(playerAddress, socketEmitter);
+        const newPlayer = new Player(playerAddress, socketEmitter, this.startStack);
         const playerAddrs = this.players.map(el => el.getAddress());
         let didJoin;
         if (playerAddrs.includes(playerAddress)) {
@@ -57,7 +58,8 @@ export class Game {
         socketEmitter('player-joined', {
             success: true,
             playerAddress: playerAddress,
-            didJoin
+            stack: this.startStack,
+            //didJoin
         });
         if (didJoin) {
             console.log('emit', playerAddress);
@@ -79,15 +81,14 @@ export class Game {
             // });
         }
         else {
-            // TODO validate
-            const newOutstandingBet = betMessage.newBetAmount + player.getOutstandingBet();
+            // TODO validate by checking against player's stack
+            const newOutstandingBet = player.newBet(betMessage.newBetAmount);
             if (newOutstandingBet > this.activeBet) {
                 this.activeBet = newOutstandingBet;
                 this.raiser = player;
             }
-
-            player.setOutstandingBet(newOutstandingBet);
         }
+        //setOutstandingBet
         this.nextBet(player)
     }
 
@@ -212,7 +213,8 @@ export class Game {
     }
 
     private setBlind(player: Player, blindAmount: number) {
-        player.setOutstandingBet(blindAmount);
+        player.newBet(blindAmount);
+        // player.setOutstandingBet(blindAmount);
     }
 
     dealPocketCards() {

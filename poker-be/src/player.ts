@@ -1,3 +1,4 @@
+import e from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { iBetMessage, iCard, wsfeendpoint } from '../../shared/sharedtypes';
 import { SocketEmitter } from './types/betypes';
@@ -11,16 +12,20 @@ export class Player {
     private bestHandValue = 0;
     private bestHand: iCard[] = [];
 
+    private stack = 0;
+
     //private betNeeded = false;
     private outstandingBet = 0;
     private folded = false;
 
     constructor(
         address: string,
-        socketEmitter: SocketEmitter
+        socketEmitter: SocketEmitter,
+        stack: number
     ) {
         this.address = address;
         this.socketEmitter = socketEmitter;
+        this.stack = stack;
 
     }
 
@@ -41,9 +46,30 @@ export class Player {
         this.socketEmitter('request-bet', { curBet });
     }
 
+
+
+    public newBet(newBetAmount: number) {
+        if (newBetAmount > this.stack) {
+            // this shouldn't happen - throw some error
+        } else {
+            this.stack -= newBetAmount;
+            this.outstandingBet += newBetAmount;
+        }
+        const betMsg = {
+            outstandingBet: this.outstandingBet,
+            stack: this.stack
+        };
+        this.socketEmitter('set-outstanding-bet', betMsg);
+        return this.outstandingBet;
+    }
+
     public setOutstandingBet(newOutstandingBet: number) {
         this.outstandingBet = newOutstandingBet;
-        const betMsg = { outstandingBet: newOutstandingBet };
+        this.stack = newOutstandingBet
+        const betMsg = {
+            outstandingBet: newOutstandingBet,
+            stack: this.stack
+        };
         this.socketEmitter('set-outstanding-bet', betMsg);
     }
 

@@ -31,10 +31,17 @@ Run backend server via
 cd poker-be
 npm run dev
 ```
+
 Run frontend via 
 ```
 cd poker-fe
 ng serve
+```
+
+Run backend testing via
+```
+cd poker-be
+npm run test
 ```
 
 Run Cypress front end test via `ng run poker-fe:cypress-open` from `./poker-fe`

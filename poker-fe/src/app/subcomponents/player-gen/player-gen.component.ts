@@ -21,6 +21,7 @@ export class PlayerGenComponent implements OnInit {
   minBet = 0;
   errMsg = '';
   folded = false;
+  stack = 0;
 
   @Input() gameId: string;
   @Input() playerIdx: number;
@@ -34,6 +35,7 @@ export class PlayerGenComponent implements OnInit {
     console.log('player gen init');
     this.connection.on('player-joined', (msg) => {
       this.alreadyJoined = true;
+      this.stack = msg.stack;
     });
 
     this.connection.on('deal-pocket-cards', (cards: iCard[]) => {
@@ -54,6 +56,7 @@ export class PlayerGenComponent implements OnInit {
 
     this.connection.on('set-outstanding-bet', (msg) => {
       this.outstandingBet = msg.outstandingBet;
+      this.stack = msg.stack;
     });
   }
 

@@ -6,12 +6,14 @@
     <div>
         Address {{getAddress()}}
     </div>
-
+    <div>
+        Address {{stack}}
+    </div>
     <button (click)="join()" [disabled]="alreadyJoined || !gameId">
         Join
     </button>
 
-    <div class="outstanding-bet"> 
+    <div class="outstanding-bet">
         Outstanding Bet: {{outstandingBet}}
     </div>
     <div class="error-text">
